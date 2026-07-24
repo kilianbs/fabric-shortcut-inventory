@@ -1,5 +1,7 @@
 # Fabric Shortcut Inventory
 
+> 🌐 Read this in [English](README_EN.md).
+
 Notebook de Microsoft Fabric que escanea workspaces y construye un **inventario completo de los shortcuts de OneLake**, detectando shortcuts **huérfanos**, **circulares** y **externos sin governance**, con un informe HTML interactivo y guardado opcional en tabla Delta.
 
 ![Vista general del informe HTML](assets/report-preview.png)
