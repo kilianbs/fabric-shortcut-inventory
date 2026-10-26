@@ -94,6 +94,24 @@ El informe se renderiza dentro del propio notebook, sin dependencias externas:
 - El enriquecimiento de governance depende del *admin scan* de `sempy` y de permisos de administrador; sin ellos, las columnas quedan vacías.
 - El guardado en Delta usa modo `overwrite`; cambia a `append` en la última celda si quieres conservar histórico.
 
+## Alternativa: Fabric App
+
+Además del notebook, el repositorio incluye una **Fabric App** construida con [Rayfin](https://www.npmjs.com/package/@microsoft/rayfin-cli) en [`app/`](app/). Escanea en vivo desde el navegador, con el mismo esquema de salida y las mismas validaciones de huérfanos y circulares.
+
+- El escaneo lo ejecuta la Function `scanShortcutInventory` con la **identidad de la app** (el propietario del ítem Fabric App), no con la del usuario que la abre. Todos los usuarios con acceso a la app ven lo que puede ver ese propietario.
+- La comprobación de governance solo está disponible en el notebook.
+- Cada escaneo está limitado a ~250 s; con tenants grandes, usa una lista de workspaces.
+
+```bash
+cd app
+npm install
+npm test          # lógica de inventario + frontend
+npx rayfin up     # despliega en un workspace de Fabric (pide confirmación)
+npm run dev       # desarrollo local contra el despliegue activo
+```
+
+Consulta [CHANGELOG.md](CHANGELOG.md) para el historial de versiones.
+
 ## Licencia
 
 [MIT](LICENSE) — libre para usar, modificar y redistribuir con atribución.

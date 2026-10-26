@@ -1,0 +1,36 @@
+id: app
+name: app
+version: 1.0.0
+services:
+  functions:
+    enabled: true
+    path: packages/functions
+    buildCommand: npm run build
+    auth:
+      type: application
+  auth:
+    enabled: true
+    fabric:
+      enabled: true
+      externalEntraExchange: true
+    password:
+      enabled: false
+    allowedRedirectUris:
+      - http://localhost:5173
+      - http://127.0.0.1:5173
+      - https://true-cape-0be5a9d98d-westeurope.webapp.fabricapps.net
+  data:
+    enabled: false
+    path: packages/data
+    buildCommand: npm run build
+  staticHosting:
+    enabled: true
+    path: packages/frontend
+    folder: dist
+    buildCommand: npm run build:fabric
+    indexDocument: index.html
+    assetAccess: protected
+    embedded:
+      only: false
+  storage:
+    enabled: false
