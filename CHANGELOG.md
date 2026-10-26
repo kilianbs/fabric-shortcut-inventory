@@ -14,7 +14,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
   - Escaneo en vivo mediante la Function `scanShortcutInventory`, que llama a la API REST de Fabric con la identidad de la app (el propietario del ítem Fabric App).
   - Ámbito por lista de workspaces (nombre o ID) o de todo el tenant (API de admin, con *fallback* a los workspaces accesibles).
   - Mismo esquema de columnas que el notebook, con detección de shortcuts **huérfanos** y **circulares** y resolución de nombres de destino.
-  - Interfaz con resumen y vistas General, Circulares, Huérfanos y Governance, con colores por fila.
+  - Interfaz con el estilo de [Fabric Schedule Inventory](https://github.com/kilianbs/fabric-schedule-inventory): página de inicio con el ámbito y el tiempo de escaneo, navegación lateral (Inventario, Huérfanos, Circulares, Acerca de), tarjetas de resumen, tabla con búsqueda, filtros, orden y paginación, y panel de detalle con enlaces al portal de Fabric.
   - Tests de la lógica de inventario (`npm test` en `app/`).
 - Documentación en inglés (`README_EN.md`) y notebook localizado (`shortcut_inventory_en.ipynb`), con enlace desde el README en español.
 
