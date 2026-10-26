@@ -16,6 +16,15 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
   - Mismo esquema de columnas que el notebook, con detección de shortcuts **huérfanos** y **circulares** y resolución de nombres de destino.
   - Interfaz con resumen y vistas General, Circulares, Huérfanos y Governance, con colores por fila.
   - Tests de la lógica de inventario (`npm test` en `app/`).
+- Documentación en inglés (`README_EN.md`) y notebook localizado (`shortcut_inventory_en.ipynb`), con enlace desde el README en español.
+
+### Cambiado
+
+- Celdas markdown del notebook reorganizadas para mejorar la legibilidad.
+
+### Corregido
+
+- El guardado en Delta fallaba con `CANNOT_DETERMINE_TYPE` cuando una columna era nula en todas las filas; ahora el DataFrame de Spark se crea con un esquema explícito (booleanos para `is_external`, `is_orphan`, `is_circular` y `governance_flag`, texto para el resto) y se omite la escritura si no hay filas.
 
 ### Limitaciones conocidas
 

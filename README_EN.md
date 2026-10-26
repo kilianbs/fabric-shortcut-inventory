@@ -94,6 +94,24 @@ The report renders inside the notebook itself, with no external dependencies:
 - Governance enrichment depends on the `sempy` *admin scan* and admin permissions; without them, those columns stay empty.
 - Delta persistence uses `overwrite` mode; switch to `append` in the last cell if you want to keep history.
 
+## Alternative: Fabric App
+
+Besides the notebook, the repository includes a **Fabric App** built with [Rayfin](https://www.npmjs.com/package/@microsoft/rayfin-cli) in [`app/`](app/). It scans live from the browser, with the same output schema and the same orphan and circular validations.
+
+- The scan runs in the `scanShortcutInventory` Function with the **app identity** (the owner of the Fabric App item), not the identity of the user who opens it. Every user with access to the app sees what that owner can see.
+- The governance check is only available in the notebook.
+- Each scan is limited to ~250 s; for large tenants, use a workspace list.
+
+```bash
+cd app
+npm install
+npm test          # inventory logic + frontend
+npx rayfin up     # deploys to a Fabric workspace (asks for confirmation)
+npm run dev       # local development against the active deployment
+```
+
+See [CHANGELOG.md](CHANGELOG.md) for the version history.
+
 ## License
 
 [MIT](LICENSE) — free to use, modify and redistribute with attribution.
