@@ -99,6 +99,7 @@ The report renders inside the notebook itself, with no external dependencies:
 Besides the notebook, the repository includes a **Fabric App** built with [Rayfin](https://www.npmjs.com/package/@microsoft/rayfin-cli) in [`app/`](app/). It scans live from the browser, with the same output schema and the same orphan and circular validations.
 
 - The scan runs in the `scanShortcutInventory` Function with the **app identity** (the owner of the Fabric App item), not the identity of the user who opens it. Every user with access to the app sees what that owner can see.
+- Every scan is **saved** in the app database (Rayfin `data` service, a SQL Database in Fabric), keeping the history. Opening the app shows the latest saved scan without scanning again; a scan runs only when you ask for it. Saved scans are visible to every app user.
 - The governance check is only available in the notebook.
 - Each scan is limited to ~250 s; for large tenants, use a workspace list.
 

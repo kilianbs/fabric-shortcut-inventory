@@ -5,18 +5,26 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest';
 
 import type { InventoryRow, ScanResult } from '@/lib/shortcut-view';
 
 const invoke = vi.fn();
+const loadLatestScan = vi.fn();
+const saveScan = vi.fn();
 
 vi.mock('@/lib/rayfin-client', () => ({
   getRayfinClient: async () => ({
     runtimeConfig: { portalUrl: 'https://app.fabric.microsoft.com' },
     functions: { scanShortcutInventory: { invoke } },
+    data: {},
   }),
+}));
+
+vi.mock('@/lib/scan-store', () => ({
+  loadLatestScan: (...args: unknown[]) => loadLatestScan(...args),
+  saveScan: (...args: unknown[]) => saveScan(...args),
 }));
 
 import App from '@/App';
@@ -70,15 +78,27 @@ const result: ScanResult = {
   partial: false,
 };
 
+/** Renders the app and waits until the saved-scan lookup has finished. */
+async function renderApp() {
+  render(<App />);
+  await waitFor(() => expect(screen.queryByText('Abriendo el último escaneo guardado…')).toBeNull());
+}
+
 describe('App', () => {
   beforeEach(() => {
     window.location.hash = '';
     invoke.mockResolvedValue(result);
+    loadLatestScan.mockResolvedValue(null);
+    saveScan.mockResolvedValue(undefined);
   });
-  afterEach(() => invoke.mockReset());
+  afterEach(() => {
+    invoke.mockReset();
+    loadLatestScan.mockReset();
+    saveScan.mockReset();
+  });
 
   it('starts on the home with the scan disabled until a workspace is given', async () => {
-    render(<App />);
+    await renderApp();
     expect(screen.getByRole('heading', { name: 'Fabric Shortcut Inventory' })).toBeVisible();
     const scanButton = screen.getByRole('button', { name: 'Escanear shortcuts' });
     expect(scanButton).toBeDisabled();
@@ -88,7 +108,7 @@ describe('App', () => {
   });
 
   it('scans the given workspaces and shows the inventory, orphans page and detail', async () => {
-    render(<App />);
+    await renderApp();
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'DataGym, Core' } });
     fireEvent.click(screen.getByRole('button', { name: 'Escanear shortcuts' }));
 
@@ -117,7 +137,7 @@ describe('App', () => {
   });
 
   it('rescans with the scope of the last result', async () => {
-    render(<App />);
+    await renderApp();
     fireEvent.click(screen.getByRole('radio', { name: 'Todos los accesibles' }));
     fireEvent.click(screen.getByRole('button', { name: 'Escanear shortcuts' }));
     await screen.findByRole('heading', { name: 'Shortcuts de OneLake' });
@@ -131,11 +151,60 @@ describe('App', () => {
 
   it('shows the error and stays on the home when the scan fails', async () => {
     invoke.mockRejectedValueOnce(new Error('HTTP 401'));
-    render(<App />);
+    await renderApp();
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'DataGym' } });
     fireEvent.click(screen.getByRole('button', { name: 'Escanear shortcuts' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('HTTP 401');
     expect(screen.getByRole('button', { name: 'Escanear shortcuts' })).toBeEnabled();
+  });
+
+  it('opens the latest saved scan without scanning again', async () => {
+    loadLatestScan.mockResolvedValue({ result, scope: { mode: 'list', workspaces: ['DataGym'] } });
+    await renderApp();
+
+    expect(screen.getByRole('heading', { name: 'Shortcuts de OneLake' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'orders' })).toBeVisible();
+    expect(invoke).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Escanear de nuevo' }));
+    await waitFor(() =>
+      expect(invoke).toHaveBeenCalledWith(
+        { scopeMode: 'list', workspaceList: ['DataGym'] },
+        { timeoutMs: 250_000 }
+      )
+    );
+  });
+
+  it('saves every new scan with its scope', async () => {
+    await renderApp();
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'DataGym' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Escanear shortcuts' }));
+
+    await waitFor(() =>
+      expect(saveScan).toHaveBeenCalledWith(
+        {},
+        { result, scope: { mode: 'list', workspaces: ['DataGym'] } },
+        expect.any(Function)
+      )
+    );
+  });
+
+  it('keeps showing the inventory when saving fails, and says so', async () => {
+    saveScan.mockRejectedValueOnce(new Error('HTTP 500'));
+    await renderApp();
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'DataGym' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Escanear shortcuts' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('El escaneo no se pudo guardar: HTTP 500');
+    expect(screen.getByRole('heading', { name: 'Shortcuts de OneLake' })).toBeVisible();
+  });
+
+  it('falls back to the home when the saved scan cannot be read', async () => {
+    loadLatestScan.mockRejectedValue(new Error('HTTP 403'));
+    await renderApp();
+
+    expect(screen.getByRole('alert')).toHaveTextContent('No se pudo abrir el último escaneo guardado: HTTP 403');
+    expect(screen.getByRole('button', { name: 'Escanear shortcuts' })).toBeDisabled();
   });
 });

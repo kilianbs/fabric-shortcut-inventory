@@ -43,6 +43,7 @@
     "typecheck": "tsc -b"
   },
   "rayfinPacks": [
+    "data-modeling",
     "functions"
   ]
 }

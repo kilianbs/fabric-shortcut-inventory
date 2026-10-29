@@ -15,6 +15,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
   - Ámbito por lista de workspaces (nombre o ID) o de todo el tenant (API de admin, con *fallback* a los workspaces accesibles).
   - Mismo esquema de columnas que el notebook, con detección de shortcuts **huérfanos** y **circulares** y resolución de nombres de destino.
   - Interfaz con el estilo de [Fabric Schedule Inventory](https://github.com/kilianbs/fabric-schedule-inventory): página de inicio con el ámbito y el tiempo de escaneo, navegación lateral (Inventario, Huérfanos, Circulares, Acerca de), tarjetas de resumen, tabla con búsqueda, filtros, orden y paginación, y panel de detalle con enlaces al portal de Fabric.
+  - Persistencia de los escaneos en la base de datos de la app (servicio `data` de Rayfin, entidades `ScanRun` y `ShortcutRecord`): al abrir la app se carga el último escaneo guardado y solo se vuelve a escanear a petición. Se conserva el historial; un escaneo cuyo guardado se interrumpe nunca se muestra.
   - Tests de la lógica de inventario (`npm test` en `app/`).
 - Documentación en inglés (`README_EN.md`) y notebook localizado (`shortcut_inventory_en.ipynb`), con enlace desde el README en español.
 

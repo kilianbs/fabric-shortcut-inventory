@@ -99,6 +99,7 @@ El informe se renderiza dentro del propio notebook, sin dependencias externas:
 Además del notebook, el repositorio incluye una **Fabric App** construida con [Rayfin](https://www.npmjs.com/package/@microsoft/rayfin-cli) en [`app/`](app/). Escanea en vivo desde el navegador, con el mismo esquema de salida y las mismas validaciones de huérfanos y circulares.
 
 - El escaneo lo ejecuta la Function `scanShortcutInventory` con la **identidad de la app** (el propietario del ítem Fabric App), no con la del usuario que la abre. Todos los usuarios con acceso a la app ven lo que puede ver ese propietario.
+- Cada escaneo se **guarda** en la base de datos de la app (servicio `data` de Rayfin, SQL Database en Fabric) con su historial. Al abrir la app se muestra el último escaneo guardado sin volver a escanear; solo se escanea cuando lo pides. Los escaneos guardados los ven todos los usuarios de la app.
 - La comprobación de governance solo está disponible en el notebook.
 - Cada escaneo está limitado a ~250 s; con tenants grandes, usa una lista de workspaces.
 

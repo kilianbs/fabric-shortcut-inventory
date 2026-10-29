@@ -152,8 +152,8 @@ export function Home({
             </p>
             <p className="text-400 mt-300 max-w-xl leading-500 text-muted-foreground">
               Un escaneo recorre los workspaces elegidos, lista los shortcuts de OneLake de cada
-              ítem y detecta los huérfanos y los circulares. El resultado se calcula en el momento
-              y no se guarda.
+              ítem y detecta los huérfanos y los circulares. El resultado se guarda y la app
+              lo abre directamente la próxima vez.
             </p>
 
             <ul className="mt-auto grid gap-300 pt-600 sm:grid-cols-2 lg:auto-rows-fr">

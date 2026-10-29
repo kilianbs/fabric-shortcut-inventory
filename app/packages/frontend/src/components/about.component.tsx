@@ -104,7 +104,8 @@ export function About({ lastScan }: { lastScan: LastScan }) {
             </ul>
             <p className="text-200 mt-300 flex items-start gap-200 text-muted-foreground">
               <ShieldCheck aria-hidden="true" className="h-300 w-300 shrink-0" />
-              El inventario solo vive en esta pestaña: no se guarda ningún dato.
+              Cada escaneo se guarda en la base de datos de la app y lo ven todos sus usuarios. Al
+              abrir la app se muestra el último; solo se vuelve a escanear cuando lo pides.
             </p>
           </section>
 

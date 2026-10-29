@@ -5,19 +5,19 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-/**
- * The app's Rayfin data schema registration.
- *
- * Empty on purpose. A dashboard over a Power BI semantic model stores nothing,
- * so the data service ships disabled in `rayfin/rayfin.yml` and both of these
- * stay as they are.
- *
- * When the app needs to own records — a tracker, a request list, an admin screen
- * — read the `data-modeling` skill, set `services.data.enabled: true`, declare
- * each entity as a decorated class, export it from this package, add it to
- * `UniversalAppSchema`, and register it in `schema`. Every entity needs explicit
- * access control; anonymous access is refused at validation time.
- */
-export type { UniversalAppSchema } from '@rayfin-app/shared';
+import { ScanRun } from './ScanRun.js';
+import { ShortcutRecord } from './ShortcutRecord.js';
+import type { UniversalAppSchema } from '@rayfin-app/shared';
 
-export const schema = [];
+/**
+ * The app's Rayfin data schema: saved scans and their inventory rows.
+ *
+ * `UniversalAppSchema` in `@rayfin-app/shared` is what makes
+ * `(await getRayfinClient()).data.<Entity>` typed, so keep it in step with `schema`
+ * below: a class registered in `schema` but missing from the shared type is
+ * reachable at runtime and invisible to the compiler.
+ */
+export type { UniversalAppSchema };
+export { ScanRun, ShortcutRecord };
+
+export const schema = [ScanRun, ShortcutRecord];
