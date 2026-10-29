@@ -6,7 +6,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
-## [1.1.0] - Unreleased
+## [1.1.0] - 2026-10-29
 
 ### Added
 
@@ -40,3 +40,4 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - `shortcut_inventory.ipynb` notebook with an inventory of OneLake shortcuts, orphan, circular and governance checks, an HTML report and optional saving to Delta.
 
 [Unreleased]: https://github.com/kilianbs/fabric-shortcut-inventory/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/kilianbs/fabric-shortcut-inventory/releases/tag/v1.1.0
