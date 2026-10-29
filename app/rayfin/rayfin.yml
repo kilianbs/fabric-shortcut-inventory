@@ -1,5 +1,5 @@
-id: app
-name: app
+id: shortcut-inventory
+name: shortcut-inventory
 version: 1.0.0
 services:
   functions:

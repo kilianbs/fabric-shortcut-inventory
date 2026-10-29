@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "shortcut-inventory",
   "description": "A lean React + Vite starter that grows into anything. A built-in capability router reads what you ask for, then enables the right Rayfin services, installs the right modules, and activates the right skills — Fabric analytics dashboards, CRUD apps, or functions.",
   "license": "MIT",
   "author": "Microsoft",
