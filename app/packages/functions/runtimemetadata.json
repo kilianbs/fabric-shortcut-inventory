@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "2.0",
+  "functions": [
+    {
+      "functionName": "scanShortcutInventory",
+      "delegateParameters": [
+        {
+          "name": "ctx",
+          "type": "RayfinContext<Record<string, any>, AudienceType.Fabric>",
+          "optional": false,
+          "hasDefault": false,
+          "position": 0,
+          "isFabricParameter": false
+        },
+        {
+          "name": "scopeMode",
+          "type": "string",
+          "optional": false,
+          "hasDefault": false,
+          "position": 1,
+          "isFabricParameter": false
+        },
+        {
+          "name": "workspaceList",
+          "type": "string[]",
+          "optional": false,
+          "hasDefault": false,
+          "position": 2,
+          "isFabricParameter": false
+        }
+      ],
+      "contextAudiences": [
+        "Fabric"
+      ]
+    }
+  ]
+}
