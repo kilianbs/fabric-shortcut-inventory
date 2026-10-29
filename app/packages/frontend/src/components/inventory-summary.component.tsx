@@ -70,7 +70,7 @@ function TargetMeter({ oneLake, external }: { oneLake: number; external: number 
   return (
     <div
       role="img"
-      aria-label={`${formatNumber(oneLake)} OneLake, ${formatNumber(external)} externos`}
+      aria-label={`${formatNumber(oneLake)} OneLake, ${formatNumber(external)} external`}
       className="bg-muted mt-100 flex h-100 w-full overflow-hidden rounded-full"
     >
       <span className="animate-grow-x flex h-full w-full origin-left [animation-delay:240ms]">
@@ -97,7 +97,7 @@ export function InventorySummary({ totals }: { totals: InventoryTotals }) {
           label="Shortcuts"
           index={1}
           value={totals.shortcuts}
-          hint={`${formatNumber(totals.external)} a almacenamiento externo`}
+          hint={`${formatNumber(totals.external)} to external storage`}
         >
           <TargetMeter oneLake={totals.shortcuts - totals.external} external={totals.external} />
         </Tile>

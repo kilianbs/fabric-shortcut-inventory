@@ -176,6 +176,23 @@ describe('App', () => {
     );
   });
 
+  it('describes external shortcuts in the summary in English', async () => {
+    const external = row({
+      shortcut_name: 'raw_s3',
+      target_type: 'AmazonS3',
+      is_external: true,
+      target_location: 'https://bucket.s3.amazonaws.com/raw',
+    });
+    loadLatestScan.mockResolvedValue({
+      result: { ...result, rows: [...result.rows, external] },
+      scope: { mode: 'list', workspaces: ['DataGym'] },
+    });
+    await renderApp();
+
+    expect(screen.getByText('1 to external storage')).toBeVisible();
+    expect(screen.getByRole('img', { name: '2 OneLake, 1 external' })).toBeInTheDocument();
+  });
+
   it('saves every new scan with its scope', async () => {
     await renderApp();
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'DataGym' } });
