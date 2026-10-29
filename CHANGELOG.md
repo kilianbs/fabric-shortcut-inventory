@@ -22,6 +22,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 - English is the only language of the repository: the README, the notebook and the Fabric App are in English. The Spanish README and notebook were removed and the English notebook is now `shortcut_inventory.ipynb`.
 - Notebook markdown cells reorganized for readability.
+- The README presents the Fabric App as the main solution, with screenshots, and the notebook as the alternative.
 
 ### Fixed
 

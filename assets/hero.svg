@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="500" viewBox="0 0 1600 500" role="img" aria-labelledby="title desc">
+  <title id="title">Fabric Shortcut Inventory</title>
+  <desc id="desc">Open-source Microsoft Fabric notebook and app that inventories OneLake shortcuts across workspaces and flags orphaned, circular and ungoverned external shortcuts.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8f1fb"/>
+      <stop offset="0.52" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e8f4f0"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#117865"/>
+      <stop offset="0.55" stop-color="#0078d4"/>
+      <stop offset="1" stop-color="#742774"/>
+    </linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#d1d1d1" stroke-opacity="0.34"/>
+    </pattern>
+    <filter id="shadow4" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.15"/>
+    </filter>
+    <filter id="shadow8" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="500" fill="url(#background)"/>
+  <rect width="1600" height="500" fill="url(#grid)" opacity="0.55"/>
+  <circle cx="132" cy="86" r="190" fill="#0078d4" opacity="0.035"/>
+  <circle cx="1480" cy="470" r="250" fill="#117865" opacity="0.045"/>
+
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <!-- Badges -->
+    <g transform="translate(80 56)" font-size="12" font-weight="650">
+      <g>
+        <rect width="122" height="32" rx="16" fill="#f1faf1" stroke="#9fd89f"/>
+        <circle cx="18" cy="16" r="4" fill="#0e700e"/>
+        <text x="31" y="20" fill="#0e700e">OPEN SOURCE</text>
+      </g>
+      <g transform="translate(134)">
+        <rect width="112" height="32" rx="16" fill="#ffffff" stroke="#d1d1d1"/>
+        <text x="18" y="20" fill="#424242">MIT LICENSED</text>
+      </g>
+      <g transform="translate(258)">
+        <rect width="124" height="32" rx="16" fill="#eef6fc" stroke="#a9d3f2"/>
+        <text x="18" y="20" fill="#005a9e">FABRIC NATIVE</text>
+      </g>
+    </g>
+
+    <!-- Logo: shortcut arrow leaving a lake -->
+    <g transform="translate(80 126)">
+      <rect width="78" height="78" rx="18" fill="url(#brand)" filter="url(#shadow4)"/>
+      <path d="M40 19H27A8 8 0 0 0 19 27V51A8 8 0 0 0 27 59H51A8 8 0 0 0 59 51V38" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M38 40L59 19M46 19H59V32" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M26 50Q30 46 34 50T42 50" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+    </g>
+
+    <text x="182" y="146" fill="#005a9e" font-size="13" font-weight="700" letter-spacing="1.5">MICROSOFT FABRIC ONELAKE</text>
+    <text x="182" y="198" fill="#242424" font-size="58" font-weight="700" letter-spacing="-1.4">Shortcut Inventory</text>
+    <text x="80" y="270" fill="#242424" font-size="27" font-weight="500">Know where every OneLake shortcut points.</text>
+    <text x="80" y="310" fill="#616161" font-size="17">Workspaces &#183; shortcuts &#183; targets &#183; orphans &#183; cycles &#183; governance</text>
+
+    <!-- Feature cards -->
+    <g transform="translate(80 354)">
+      <g>
+        <rect width="158" height="66" rx="10" fill="#ffffff" stroke="#e0e0e0" filter="url(#shadow4)"/>
+        <rect x="14" y="14" width="38" height="38" rx="9" fill="#eef6fc"/>
+        <circle cx="31" cy="31" r="7" fill="none" stroke="#0078d4" stroke-width="2"/>
+        <path d="M36 36L42 42" stroke="#0078d4" stroke-width="2.4" stroke-linecap="round"/>
+        <text x="66" y="29" fill="#242424" font-size="13" font-weight="650">Scan</text>
+        <text x="66" y="47" fill="#616161" font-size="11">Every workspace</text>
+      </g>
+      <g transform="translate(170)">
+        <rect width="158" height="66" rx="10" fill="#ffffff" stroke="#e0e0e0" filter="url(#shadow4)"/>
+        <rect x="14" y="14" width="38" height="38" rx="9" fill="#fdf3f4"/>
+        <circle cx="33" cy="33" r="9" fill="none" stroke="#bc2f32" stroke-width="1.8" stroke-dasharray="3 2.6"/>
+        <path d="M30 30L36 36M36 30L30 36" stroke="#bc2f32" stroke-width="2" stroke-linecap="round"/>
+        <text x="66" y="29" fill="#242424" font-size="13" font-weight="650">Orphans</text>
+        <text x="66" y="47" fill="#616161" font-size="11">Missing targets</text>
+      </g>
+      <g transform="translate(340)">
+        <rect width="158" height="66" rx="10" fill="#ffffff" stroke="#e0e0e0" filter="url(#shadow4)"/>
+        <rect x="14" y="14" width="38" height="38" rx="9" fill="#f7eff8"/>
+        <path d="M41 28A9 9 0 0 0 25 30M25 38A9 9 0 0 0 41 36" fill="none" stroke="#742774" stroke-width="2" stroke-linecap="round"/>
+        <path d="M41 23V28H36M25 43V38H30" fill="none" stroke="#742774" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="66" y="29" fill="#242424" font-size="13" font-weight="650">Cycles</text>
+        <text x="66" y="47" fill="#616161" font-size="11">Circular chains</text>
+      </g>
+      <g transform="translate(510)">
+        <rect width="158" height="66" rx="10" fill="#ffffff" stroke="#e0e0e0" filter="url(#shadow4)"/>
+        <rect x="14" y="14" width="38" height="38" rx="9" fill="#fffef5"/>
+        <path d="M33 23L42 26.5V33C42 38 38.5 41.5 33 43C27.5 41.5 24 38 24 33V26.5Z" fill="none" stroke="#817400" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M33 28.5V34" stroke="#817400" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="33" cy="37.5" r="1.3" fill="#817400"/>
+        <text x="66" y="29" fill="#242424" font-size="13" font-weight="650">Governance</text>
+        <text x="66" y="47" fill="#616161" font-size="11">Labels &amp; trust</text>
+      </g>
+    </g>
+
+    <!-- App window: inventory with illustrative data -->
+    <g transform="translate(840 60)">
+      <rect width="680" height="380" rx="18" fill="#ffffff" stroke="#d1d1d1" filter="url(#shadow8)"/>
+      <path d="M0 56V18A18 18 0 0 1 18 0H662A18 18 0 0 1 680 18V56Z" fill="#fafafa"/>
+      <path d="M0 56H680" stroke="#e0e0e0"/>
+      <circle cx="26" cy="28" r="5" fill="#bc2f32"/>
+      <circle cx="44" cy="28" r="5" fill="#817400"/>
+      <circle cx="62" cy="28" r="5" fill="#0e700e"/>
+      <text x="84" y="33" fill="#616161" font-size="12">Shortcut inventory &#183; latest scan &#183; 42 workspaces</text>
+      <rect x="564" y="14" width="92" height="28" rx="6" fill="#0078d4"/>
+      <path d="M582 23A6 6 0 1 0 584 29" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M579 21V24H582" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="594" y="32" fill="#ffffff" font-size="12" font-weight="650">Run scan</text>
+
+      <!-- KPI tiles -->
+      <g transform="translate(24 72)">
+        <g>
+          <rect width="120" height="52" rx="8" fill="#fafafa" stroke="#e0e0e0"/>
+          <rect x="0" y="12" width="3" height="28" rx="1.5" fill="#0078d4"/>
+          <text x="14" y="21" fill="#616161" font-size="10">Shortcuts</text>
+          <text x="14" y="42" fill="#242424" font-size="20" font-weight="700">248</text>
+        </g>
+        <g transform="translate(128)">
+          <rect width="120" height="52" rx="8" fill="#fafafa" stroke="#e0e0e0"/>
+          <rect x="0" y="12" width="3" height="28" rx="1.5" fill="#117865"/>
+          <text x="14" y="21" fill="#616161" font-size="10">External</text>
+          <text x="14" y="42" fill="#117865" font-size="20" font-weight="700">37</text>
+        </g>
+        <g transform="translate(256)">
+          <rect width="120" height="52" rx="8" fill="#fafafa" stroke="#e0e0e0"/>
+          <rect x="0" y="12" width="3" height="28" rx="1.5" fill="#bc2f32"/>
+          <text x="14" y="21" fill="#616161" font-size="10">Orphaned</text>
+          <text x="14" y="42" fill="#bc2f32" font-size="20" font-weight="700">4</text>
+        </g>
+        <g transform="translate(384)">
+          <rect width="120" height="52" rx="8" fill="#fafafa" stroke="#e0e0e0"/>
+          <rect x="0" y="12" width="3" height="28" rx="1.5" fill="#742774"/>
+          <text x="14" y="21" fill="#616161" font-size="10">Circular</text>
+          <text x="14" y="42" fill="#742774" font-size="20" font-weight="700">2</text>
+        </g>
+        <g transform="translate(512)">
+          <rect width="120" height="52" rx="8" fill="#fafafa" stroke="#e0e0e0"/>
+          <rect x="0" y="12" width="3" height="28" rx="1.5" fill="#817400"/>
+          <text x="14" y="21" fill="#616161" font-size="10">Ungoverned</text>
+          <text x="14" y="42" fill="#817400" font-size="20" font-weight="700">6</text>
+        </g>
+      </g>
+
+      <!-- Table header -->
+      <rect x="24" y="140" width="632" height="24" fill="#f7f7f7"/>
+      <g font-size="10" font-weight="650" fill="#424242">
+        <text x="32" y="156">Shortcut</text>
+        <text x="180" y="156">Item</text>
+        <text x="320" y="156">Target</text>
+        <text x="480" y="156">Type</text>
+        <text x="568" y="156">Status</text>
+      </g>
+
+      <!-- Row tints (per-status color coding) -->
+      <rect x="24" y="164" width="632" height="32" fill="#fffdf3"/>
+      <rect x="24" y="228" width="632" height="32" fill="#fdf6f6"/>
+      <rect x="24" y="260" width="632" height="32" fill="#faf5fb"/>
+      <g stroke="#ececec">
+        <path d="M24 196H656M24 228H656M24 260H656M24 292H656M24 324H656"/>
+      </g>
+
+      <g font-size="11.5" fill="#242424">
+        <!-- Row 1: external, ungoverned -->
+        <rect x="32" y="175" width="10" height="10" rx="2" fill="#117865"/>
+        <text x="48" y="184">sales_raw</text>
+        <text x="180" y="184" fill="#424242">lh_bronze</text>
+        <text x="320" y="184" fill="#616161">s3://acme-sales/raw</text>
+
+        <!-- Row 2: OneLake, ok -->
+        <rect x="32" y="207" width="10" height="10" rx="2" fill="#0078d4"/>
+        <text x="48" y="216">customers</text>
+        <text x="180" y="216" fill="#424242">lh_silver</text>
+        <text x="320" y="216" fill="#616161">lh_bronze/customers</text>
+
+        <!-- Row 3: OneLake, orphaned -->
+        <rect x="32" y="239" width="10" height="10" rx="2" fill="#0078d4"/>
+        <text x="48" y="248">orders_hist</text>
+        <text x="180" y="248" fill="#424242">lh_gold</text>
+        <text x="320" y="248" fill="#616161">lh_archive/orders</text>
+
+        <!-- Row 4: OneLake, circular -->
+        <rect x="32" y="271" width="10" height="10" rx="2" fill="#0078d4"/>
+        <text x="48" y="280">dim_date</text>
+        <text x="180" y="280" fill="#424242">lh_silver</text>
+        <text x="320" y="280" fill="#616161">lh_gold/dim_date</text>
+
+        <!-- Row 5: external, ok -->
+        <rect x="32" y="303" width="10" height="10" rx="2" fill="#117865"/>
+        <text x="48" y="312">ledger</text>
+        <text x="180" y="312" fill="#424242">kql_finance</text>
+        <text x="320" y="312" fill="#616161">adls://finance/ledger</text>
+      </g>
+
+      <!-- Type pills -->
+      <g font-size="10.5" font-weight="600">
+        <rect x="480" y="171" width="72" height="18" rx="9" fill="#f5f5f5" stroke="#e0e0e0"/>
+        <text x="516" y="184" fill="#424242" text-anchor="middle">Amazon S3</text>
+        <rect x="480" y="203" width="72" height="18" rx="9" fill="#eef6fc" stroke="#a9d3f2"/>
+        <text x="516" y="216" fill="#005a9e" text-anchor="middle">OneLake</text>
+        <rect x="480" y="235" width="72" height="18" rx="9" fill="#eef6fc" stroke="#a9d3f2"/>
+        <text x="516" y="248" fill="#005a9e" text-anchor="middle">OneLake</text>
+        <rect x="480" y="267" width="72" height="18" rx="9" fill="#eef6fc" stroke="#a9d3f2"/>
+        <text x="516" y="280" fill="#005a9e" text-anchor="middle">OneLake</text>
+        <rect x="480" y="299" width="72" height="18" rx="9" fill="#f5f5f5" stroke="#e0e0e0"/>
+        <text x="516" y="312" fill="#424242" text-anchor="middle">ADLS Gen2</text>
+      </g>
+
+      <!-- Status pills -->
+      <g font-size="10.5" font-weight="650">
+        <rect x="568" y="171" width="88" height="18" rx="9" fill="#fefbe8" stroke="#e6d97a"/>
+        <circle cx="579" cy="180" r="3.5" fill="#817400"/>
+        <text x="588" y="184" fill="#817400">Ungoverned</text>
+        <rect x="568" y="203" width="88" height="18" rx="9" fill="#f1faf1" stroke="#9fd89f"/>
+        <circle cx="579" cy="212" r="3.5" fill="#0e700e"/>
+        <text x="588" y="216" fill="#0e700e">OK</text>
+        <rect x="568" y="235" width="88" height="18" rx="9" fill="#fdf3f4" stroke="#eeacb2"/>
+        <circle cx="579" cy="244" r="3.5" fill="#bc2f32"/>
+        <text x="588" y="248" fill="#bc2f32">Orphaned</text>
+        <rect x="568" y="267" width="88" height="18" rx="9" fill="#f7eff8" stroke="#d6b1d8"/>
+        <circle cx="579" cy="276" r="3.5" fill="#742774"/>
+        <text x="588" y="280" fill="#742774">Circular</text>
+        <rect x="568" y="299" width="88" height="18" rx="9" fill="#f1faf1" stroke="#9fd89f"/>
+        <circle cx="579" cy="308" r="3.5" fill="#0e700e"/>
+        <text x="588" y="312" fill="#0e700e">OK</text>
+      </g>
+
+      <g transform="translate(24 342)">
+        <circle cx="8" cy="8" r="5" fill="#0e700e"/>
+        <text x="22" y="12" fill="#424242" font-size="11" font-weight="600">Metadata only</text>
+        <text x="124" y="12" fill="#bdbdbd" font-size="11">&#183;</text>
+        <text x="140" y="12" fill="#424242" font-size="11" font-weight="600">Deployed in Fabric</text>
+        <text x="258" y="12" fill="#bdbdbd" font-size="11">&#183;</text>
+        <text x="274" y="12" fill="#424242" font-size="11" font-weight="600">Notebook or React and Rayfin app</text>
+      </g>
+    </g>
+  </g>
+</svg>
