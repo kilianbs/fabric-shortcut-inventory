@@ -43,17 +43,38 @@ export interface InventoryTotals {
   errors: number;
 }
 
+/** A status marker of a shortcut; 'none' is a shortcut without any marker. */
+export type ShortcutStatus = 'orphan' | 'circular' | 'external' | 'none';
+
+const STATUS_LABELS: Record<ShortcutStatus, string> = {
+  orphan: 'Orphan',
+  circular: 'Circular',
+  external: 'External',
+  none: 'No flags',
+};
+
 export interface ShortcutFilters {
   query: string;
   workspace: string;
   targetType: string;
+  /** Selected status, or '' for all. */
+  status: ShortcutStatus | '';
 }
 
 export const DEFAULT_FILTERS: ShortcutFilters = {
   query: '',
   workspace: '',
   targetType: '',
+  status: '',
 };
+
+/** A shortcut can be orphan, circular and external at once. */
+function hasStatus(row: ShortcutRow, status: ShortcutStatus): boolean {
+  if (status === 'orphan') return row.isOrphan;
+  if (status === 'circular') return row.isCircular;
+  if (status === 'external') return row.isExternal;
+  return !row.isOrphan && !row.isCircular && !row.isExternal;
+}
 
 /** Rows of the scan that describe a shortcut; item-level error rows are left out. */
 export function toShortcutRows(rows: readonly InventoryRow[]): ShortcutRow[] {
@@ -116,6 +137,7 @@ export function filterShortcuts(
     (r) =>
       (filters.workspace === '' || r.workspaceName === filters.workspace) &&
       (filters.targetType === '' || r.targetType === filters.targetType) &&
+      (filters.status === '' || hasStatus(r, filters.status)) &&
       (needle === '' ||
         [r.name, r.path, r.itemName, r.workspaceName, r.targetLocation].some((v) =>
           v.toLowerCase().includes(needle)
@@ -125,8 +147,28 @@ export function filterShortcuts(
 
 export function isDefaultFilters(filters: ShortcutFilters): boolean {
   return (
-    filters.query.trim() === '' && filters.workspace === '' && filters.targetType === ''
+    filters.query.trim() === '' &&
+    filters.workspace === '' &&
+    filters.targetType === '' &&
+    filters.status === ''
   );
+}
+
+export function statusLabel(status: ShortcutStatus): string {
+  return STATUS_LABELS[status];
+}
+
+/** Status filter options: the statuses present, in severity order. */
+export function countStatuses(
+  rows: readonly ShortcutRow[]
+): { value: ShortcutStatus; label: string; count: number }[] {
+  return (Object.keys(STATUS_LABELS) as ShortcutStatus[])
+    .map((status) => ({
+      value: status,
+      label: STATUS_LABELS[status],
+      count: rows.filter((r) => hasStatus(r, status)).length,
+    }))
+    .filter((option) => option.count > 0);
 }
 
 /** Option counts for a filter menu: most frequent first, then by name. */

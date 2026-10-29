@@ -3,13 +3,14 @@ import { describe, expect, it } from 'vitest';
 import {
   computeTotals,
   countBy,
+  countStatuses,
   DEFAULT_FILTERS,
   filterShortcuts,
   isDefaultFilters,
   itemErrors,
   toShortcutRows,
 } from '@/lib/shortcut-view';
-import type { InventoryRow, ScanResult } from '@/lib/shortcut-view';
+import type { InventoryRow, ScanResult, ShortcutFilters } from '@/lib/shortcut-view';
 
 function row(overrides: Partial<InventoryRow>): InventoryRow {
   return {
@@ -140,6 +141,32 @@ describe('filterShortcuts', () => {
     const filters = { ...DEFAULT_FILTERS, workspace: 'Sales', targetType: 'OneLake' };
     expect(filterShortcuts(shortcuts, filters).map((s) => s.name)).toEqual(['orders', 'loop']);
     expect(isDefaultFilters(filters)).toBe(false);
+  });
+
+  it('filters by status, with "none" for shortcuts without flags', () => {
+    const names = (status: ShortcutFilters['status']) =>
+      filterShortcuts(shortcuts, { ...DEFAULT_FILTERS, status }).map((s) => s.name);
+    expect(names('orphan')).toEqual(['ghost']);
+    expect(names('circular')).toEqual(['loop']);
+    expect(names('external')).toEqual(['events']);
+    expect(names('none')).toEqual(['orders']);
+    expect(isDefaultFilters({ ...DEFAULT_FILTERS, status: 'orphan' })).toBe(false);
+  });
+});
+
+describe('countStatuses', () => {
+  it('counts each status present, in a fixed order', () => {
+    expect(countStatuses(toShortcutRows(rows))).toEqual([
+      { value: 'orphan', label: 'Orphan', count: 1 },
+      { value: 'circular', label: 'Circular', count: 1 },
+      { value: 'external', label: 'External', count: 1 },
+      { value: 'none', label: 'No flags', count: 1 },
+    ]);
+  });
+
+  it('leaves out statuses no shortcut has', () => {
+    const healthy = toShortcutRows(rows).filter((s) => !s.isOrphan && !s.isCircular && !s.isExternal);
+    expect(countStatuses(healthy)).toEqual([{ value: 'none', label: 'No flags', count: 1 }]);
   });
 });
 

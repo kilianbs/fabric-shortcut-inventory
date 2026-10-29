@@ -201,8 +201,8 @@ export function FilterMenu({
                     optionElements(listRef.current)[0]?.focus();
                   }
                 }}
-                aria-label={`Buscar ${label.toLowerCase()}`}
-                placeholder={`Buscar ${label.toLowerCase()}…`}
+                aria-label={`Search ${label.toLowerCase()}`}
+                placeholder={`Search ${label.toLowerCase()}…`}
                 className={cn(
                   'border-input bg-background text-300 h-700 w-full rounded-lg border pr-300 pl-700',
                   FOCUS
@@ -240,7 +240,7 @@ export function FilterMenu({
             ))}
             {visible.length === 0 ? (
               <li className="text-200 px-300 py-200 text-muted-foreground">
-                Sin coincidencias.
+                No matches.
               </li>
             ) : null}
           </ul>

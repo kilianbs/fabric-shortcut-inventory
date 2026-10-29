@@ -6,9 +6,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   RefreshCw,
-  Repeat,
   SlidersHorizontal,
-  Unlink,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -27,11 +25,7 @@ interface NavItem {
 const NAV_SECTIONS: readonly { title: string; items: readonly NavItem[] }[] = [
   {
     title: 'Explore',
-    items: [
-      { route: 'inventory', label: 'Inventory', icon: LayoutDashboard },
-      { route: 'orphans', label: 'Orphans', icon: Unlink },
-      { route: 'circular', label: 'Circular', icon: Repeat },
-    ],
+    items: [{ route: 'inventory', label: 'Inventory', icon: LayoutDashboard }],
   },
   {
     title: 'System',
@@ -41,8 +35,6 @@ const NAV_SECTIONS: readonly { title: string; items: readonly NavItem[] }[] = [
 
 const PAGE_TITLES: Record<AppRoute, string> = {
   inventory: 'Inventory',
-  orphans: 'Orphans',
-  circular: 'Circular',
   about: 'About',
 };
 
@@ -51,8 +43,6 @@ export interface AppShellProps {
   onNavigate: (route: AppRoute) => void;
   scopeLabel: string;
   shortcutCount: number;
-  /** Per-route counters shown next to the nav labels. */
-  counts: Partial<Record<AppRoute, number>>;
   scannedAt: string;
   partial: boolean;
   isScanning: boolean;
@@ -89,7 +79,6 @@ export function AppShell({
   onNavigate,
   scopeLabel,
   shortcutCount,
-  counts,
   scannedAt,
   partial,
   isScanning,
@@ -139,7 +128,7 @@ export function AppShell({
         </div>
 
         <nav
-          aria-label="Principal"
+          aria-label="Main"
           className="flex flex-wrap gap-x-400 gap-y-300 lg:flex-col"
         >
           {NAV_SECTIONS.map((section) => (
@@ -154,7 +143,6 @@ export function AppShell({
               </p>
               {section.items.map(({ route: target, label, icon: Icon }) => {
                 const active = target === route;
-                const count = counts[target];
                 return (
                   <a
                     key={target}
@@ -180,19 +168,6 @@ export function AppShell({
                     <span className={cn('flex-1', whenCollapsed('lg:sr-only'))}>
                       {label}
                     </span>
-                    {count !== undefined && count > 0 ? (
-                      <span
-                        className={cn(
-                          'text-100 rounded-full px-200 py-100-nudge font-semibold tabular-nums',
-                          target === 'orphans'
-                            ? 'bg-destructive/10 text-destructive'
-                            : 'bg-warning text-warning-foreground',
-                          whenCollapsed('lg:sr-only')
-                        )}
-                      >
-                        {formatNumber(count)}
-                      </span>
-                    ) : null}
                   </a>
                 );
               })}

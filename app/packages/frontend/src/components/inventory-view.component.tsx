@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Ref } from 'react';
 import {
   ExternalLink,
+  Flag,
   Folder,
   MousePointerClick,
   Search,
@@ -18,15 +19,18 @@ import { EmptyState } from '@/components/states';
 import { fabricLinks } from '@/lib/fabric-links';
 import {
   countBy,
+  countStatuses,
   DEFAULT_FILTERS,
   filterShortcuts,
   isDefaultFilters,
+  statusLabel,
 } from '@/lib/shortcut-view';
 import type {
   InventoryTotals,
   ItemError,
   ShortcutFilters,
   ShortcutRow,
+  ShortcutStatus,
 } from '@/lib/shortcut-view';
 import { cn, formatNumber } from '@/lib/utils';
 
@@ -34,7 +38,7 @@ export interface InventoryViewProps {
   eyebrow: string;
   title: string;
   subtitle: string;
-  /** Shortcuts this page lists (all, orphans or circular). */
+  /** Every shortcut of the scan. */
   rows: readonly ShortcutRow[];
   totals: InventoryTotals;
   warnings: readonly string[];
@@ -100,6 +104,7 @@ export function InventoryView({
     () => countBy(rows, 'targetType').map((o) => ({ ...o, label: o.value })),
     [rows]
   );
+  const statusOptions = useMemo(() => countStatuses(rows), [rows]);
   const visible = useMemo(() => filterShortcuts(rows, filters), [rows, filters]);
   const selected = rows.find((r) => r.id === selectedId) ?? null;
 
@@ -124,6 +129,12 @@ export function InventoryView({
       value: filters.targetType,
       clear: () => updateFilter('targetType', ''),
     },
+    filters.status !== '' && {
+      key: 'status',
+      label: 'Status',
+      value: statusLabel(filters.status),
+      clear: () => updateFilter('status', ''),
+    },
   ].filter((chip) => chip !== false);
 
   return (
@@ -144,9 +155,11 @@ export function InventoryView({
         <ScanNotices warnings={warnings} errors={errors} />
 
         <div className="grid items-start gap-400 2xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          {/* The entrance animation leaves a transform, which traps the filter
+              popovers' z-index; z-10 keeps them above the detail panel. */}
           <section
             aria-labelledby="shortcuts-heading"
-            className="border-border bg-card animate-fade-up min-w-0 rounded-2xl border shadow-sm [animation-delay:240ms]"
+            className="border-border bg-card animate-fade-up relative z-10 min-w-0 rounded-2xl border shadow-sm [animation-delay:240ms]"
           >
             <div className="flex flex-col gap-300 p-400">
               <div className="flex items-baseline justify-between gap-300">
@@ -211,6 +224,14 @@ export function InventoryView({
                   value={filters.targetType}
                   onChange={(value) => updateFilter('targetType', value)}
                   options={targetOptions}
+                />
+                <FilterMenu
+                  label="Status"
+                  allLabel="All statuses"
+                  icon={Flag}
+                  value={filters.status}
+                  onChange={(value) => updateFilter('status', value as ShortcutStatus | '')}
+                  options={statusOptions}
                 />
               </div>
 

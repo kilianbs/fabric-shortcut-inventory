@@ -11,6 +11,7 @@ Branch: feat/fabric-app · Delivery: single-pr · Test runner: node --test (func
 - S6 "Quiero que el diseño de la app sea del estilo de esta https://github.com/kilianbs/fabric-schedule-inventory": app shell with sidebar (Explorar/Sistema), breadcrumb top bar with the primary action, home with hero and scope card, KPI tiles, searchable/filterable sortable table with pager and a detail panel, About page, Fabric item icons.
 - S7 "La app debe de persistir los datos y no hacer el escaneo cada vez": each scan is saved in the Rayfin data service (ScanRun + ShortcutRecord, MSSQL); on open the app shows the latest complete saved scan and only scans again when the user asks. Assumptions: history is kept (no deletes), saved scans are shared by every app user (the scan already runs as the app identity).
 - S8 "Antes quiero que solo te quedes con la versión en inglés, que será la única y el idioma global del repositorio. La app también tiene que estar en inglés": only the English README and notebook remain (as `README.md` and `shortcut_inventory.ipynb`), the CHANGELOG is in English, and all app UI copy is English. Verbatim user quotes in this document stay as written.
+- S9 "La tabla de shortcuts, el filtro de Target aparece el recuadro debajo del apartado de Shorcut detail, debe solapar por encima. Además, quiero que añadas un filtro de Status a la tabla y quites las secciones de Orphans y Circular": the filter popovers (Target and the others) overlap the Shortcut detail panel; the table gets a Status filter (Orphan, Circular, External, No flags); the Orphans and Circular pages and their nav entries are removed (old `#/orphans` and `#/circular` links open the inventory).
 - Assumption: governance enrichment (sempy admin scan) is not ported in v1; the Governance tab is shown as not available.
 
 ## Tasks
@@ -22,6 +23,7 @@ Branch: feat/fabric-app · Delivery: single-pr · Test runner: node --test (func
 - [x] T7 S6 redesign frontend in the reference style · inline · RED observed (shortcut-view module missing) → GREEN 8/8; gates OK, 6 node + 64 vitest; visual check via local preview at 1600px and 390px (Estado column moved second, KPI grid overflow on mobile fixed)
 - [x] T8 S7 persist scans in Rayfin data and load the latest on open · inline · RED observed (scan-store module missing) → GREEN 7/7; typecheck, lint, build OK; 6 node + 75 vitest; deployed and checked by the user
 - [x] T9 S8 English-only repository and app · inline · 75 vitest green after updating App.spec assertions
+- [x] T10 S9 popover above detail, Status filter, Orphans/Circular pages removed · inline · RED observed (5 new tests failing) → GREEN; typecheck, lint, build OK; 81 vitest; popover overlap not checkable in jsdom (no layout), visual check pending after deploy
 - [ ] T6 deploy + typegen + live scan check · deployed to DataGym as `shortcut-inventory`, typegen done, signed-out redirect verified; signed-in live scan pending (needs the user's Entra sign-in)
 
 ## Log
@@ -40,3 +42,6 @@ Branch: feat/fabric-app · Delivery: single-pr · Test runner: node --test (func
 - L13 2026-10-29 user: "todo ok" (deployed with the data service, persistence works) → committed.
 - L14 2026-10-29 user: "Antes quiero que solo te quedes con la versión en inglés, que será la única y el idioma global del repositorio. La app también tiene que estar en inglés"
 - L15 Supersedes L8 "UI copy stays in Spanish". The two notebooks had identical code except the report tab labels, so the Spanish one was dropped without losing logic. Pending: `assets/report-preview.png` still shows Spanish tab labels ("Vista General", "Circulares") and needs a new screenshot from a notebook run.
+- L16 2026-10-29 user: "Queda un texto en español en la tarjeta de Shortcuts. Aparece el texto almacenamiento externo" → fixed in 002c8fa.
+- L17 2026-10-29 user: "Antes de volver ad esplegar quiero que corrijas unas cosas: La tabla de shortcuts, el filtro de Target aparece el recuadro debajo del apartado de Shorcut detail, debe solapar por encima. Además, quiero que añadas un filtro de Status a la tabla y quites las secciones de Orphans y Circular"
+- L18 Cause of the overlap: the `animate-fade-up` entrance animation (fill-mode both) leaves a transform on the table card, so it is its own stacking context and the popover z-30 cannot rise above the later detail panel (which also animates). Fix: `relative z-10` on the table card. While there, translated the leftover Spanish strings in the filter menu search ("Buscar", "Sin coincidencias.") and in the mobile sort toggle and nav labels.

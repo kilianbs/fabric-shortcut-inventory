@@ -333,7 +333,7 @@ function MobileSort({
         onClick={() =>
           onChange({ key: sort.key, direction: sort.direction === 'asc' ? 'desc' : 'asc' })
         }
-        aria-label={sort.direction === 'asc' ? 'Orden descendente' : 'Orden ascendente'}
+        aria-label={sort.direction === 'asc' ? 'Sort descending' : 'Sort ascending'}
         className={cn(
           'border-input bg-background hover:bg-accent inline-flex h-700 w-700 items-center justify-center rounded-lg border',
           FOCUS

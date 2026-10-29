@@ -14,7 +14,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
   - Live scan through the `scanShortcutInventory` Function, which calls the Fabric REST API with the app identity (the owner of the Fabric App item).
   - Scope by workspace list (name or ID) or the whole tenant (admin API, falling back to the accessible workspaces).
   - Same column schema as the notebook, with **orphan** and **circular** shortcut detection and target name resolution.
-  - Interface in the style of [Fabric Schedule Inventory](https://github.com/kilianbs/fabric-schedule-inventory): a home page with the scope and scan time, side navigation (Inventory, Orphans, Circular, About), summary cards, a table with search, filters, sorting and paging, and a detail panel with links to the Fabric portal.
+  - Interface in the style of [Fabric Schedule Inventory](https://github.com/kilianbs/fabric-schedule-inventory): a home page with the scope and scan time, side navigation (Inventory, About), summary cards, a table with search, workspace, target and status filters, sorting and paging, and a detail panel with links to the Fabric portal.
   - Scans are saved in the app database (Rayfin `data` service, `ScanRun` and `ShortcutRecord` entities): the app opens the latest saved scan and only scans again on demand. History is kept; a scan whose save is interrupted is never shown.
   - Tests for the inventory logic and the frontend (`npm test` in `app/`).
 

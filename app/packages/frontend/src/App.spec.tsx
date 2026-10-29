@@ -107,7 +107,40 @@ describe('App', () => {
     expect(scanButton).toBeEnabled();
   });
 
-  it('scans the given workspaces and shows the inventory, orphans page and detail', async () => {
+  it('has no Orphans or Circular pages; old links open the inventory', async () => {
+    window.location.hash = '#/orphans';
+    loadLatestScan.mockResolvedValue({ result, scope: { mode: 'list', workspaces: ['DataGym'] } });
+    await renderApp();
+
+    expect(screen.getByRole('heading', { name: 'OneLake shortcuts' })).toBeVisible();
+    const nav = screen.getByRole('navigation', { name: 'Main' });
+    expect(within(nav).getAllByRole('link').map((link) => link.textContent)).toEqual([
+      'Inventory',
+      'About',
+    ]);
+  });
+
+  it('filters the table by status', async () => {
+    loadLatestScan.mockResolvedValue({ result, scope: { mode: 'list', workspaces: ['DataGym'] } });
+    await renderApp();
+
+    const filterBar = screen.getByRole('search', { name: 'Filter shortcuts' });
+    fireEvent.click(within(filterBar).getByRole('button', { name: 'Status' }));
+    const options = within(screen.getByRole('listbox', { name: 'Status' })).getAllByRole('option');
+    expect(options.map((option) => option.textContent)).toEqual([
+      'All statuses2',
+      'Orphan1',
+      'No flags1',
+    ]);
+    fireEvent.click(options[1]);
+
+    expect(screen.getByRole('button', { name: 'ghost' })).toBeVisible();
+    expect(screen.queryByRole('button', { name: 'orders' })).toBeNull();
+    const active = screen.getByRole('group', { name: 'Active filters' });
+    expect(within(active).getByText('Orphan')).toBeVisible();
+  });
+
+  it('scans the given workspaces and shows the inventory, orphans and detail', async () => {
     await renderApp();
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'DataGym, Core' } });
     fireEvent.click(screen.getByRole('button', { name: 'Scan shortcuts' }));
@@ -120,12 +153,6 @@ describe('App', () => {
       { timeoutMs: 250_000 }
     );
     expect(screen.getByText('DataGym, Core')).toBeVisible();
-
-    fireEvent.click(screen.getByRole('link', { name: /Orphans/ }));
-    expect(
-      await screen.findByRole('heading', { name: 'Orphan shortcuts' })
-    ).toBeVisible();
-    expect(screen.queryByRole('button', { name: 'orders' })).toBeNull();
 
     fireEvent.click(screen.getByRole('button', { name: 'ghost' }));
     const detail = screen.getByRole('region', { name: 'Shortcut detail' });

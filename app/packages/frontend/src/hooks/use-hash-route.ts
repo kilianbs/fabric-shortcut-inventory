@@ -1,11 +1,9 @@
 import { useCallback, useSyncExternalStore } from 'react';
 
-export type AppRoute = 'inventory' | 'orphans' | 'circular' | 'about';
+export type AppRoute = 'inventory' | 'about';
 
 const ROUTE_HASHES: Record<AppRoute, string> = {
   inventory: '#/',
-  orphans: '#/orphans',
-  circular: '#/circular',
   about: '#/about',
 };
 
@@ -15,9 +13,8 @@ export function routeHref(route: AppRoute): string {
 
 export function parseRoute(hash: string): AppRoute {
   const path = hash.replace(/^#\/?/, '');
-  return path === 'orphans' || path === 'circular' || path === 'about'
-    ? path
-    : 'inventory';
+  // Unknown paths (including the removed #/orphans and #/circular) open the inventory.
+  return path === 'about' ? 'about' : 'inventory';
 }
 
 function subscribe(listener: () => void) {

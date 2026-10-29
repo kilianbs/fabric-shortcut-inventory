@@ -25,28 +25,12 @@ function scopeLabel({ mode, workspaces }: Scope): string {
   return mode === 'all' ? 'All accessible workspaces' : workspaces.join(', ');
 }
 
-const PAGES = {
-  inventory: {
-    eyebrow: 'Shortcut inventory',
-    title: 'OneLake shortcuts',
-    subtitle: 'Source, target and checks of every shortcut in scope',
-    emptyTitle: 'No shortcuts in scope',
-    emptyHint: 'No scanned Lakehouse, KQL Database or Mirrored Database has shortcuts.',
-  },
-  orphans: {
-    eyebrow: 'Check',
-    title: 'Orphan shortcuts',
-    subtitle: 'Shortcuts whose target item does not exist in the scanned scope',
-    emptyTitle: 'No orphan shortcuts',
-    emptyHint: 'Every OneLake target exists in the scanned scope.',
-  },
-  circular: {
-    eyebrow: 'Check',
-    title: 'Circular shortcuts',
-    subtitle: 'Shortcuts in a chain that leads back to its source',
-    emptyTitle: 'No circular shortcuts',
-    emptyHint: 'There are no cycles between the shortcuts in scope.',
-  },
+const INVENTORY_PAGE = {
+  eyebrow: 'Shortcut inventory',
+  title: 'OneLake shortcuts',
+  subtitle: 'Source, target and checks of every shortcut in scope',
+  emptyTitle: 'No shortcuts in scope',
+  emptyHint: 'No scanned Lakehouse, KQL Database or Mirrored Database has shortcuts.',
 } as const;
 
 function parseList(text: string): string[] {
@@ -170,46 +154,27 @@ function App() {
   const rescan = () => void scan(scope);
   const shortcuts = toShortcutRows(result.rows);
   const totals = computeTotals(result);
-  const shared = {
-    totals,
-    warnings: result.warnings,
-    errors: itemErrors(result.rows),
-    portalUrl,
-  };
 
-  const renderRoute = () => {
-    switch (route) {
-      case 'about':
-        return (
-          <About
-            lastScan={{
-              scopeLabel: label,
-              scannedAt: result.scanTimestamp,
-              partial: result.partial,
-              totals,
-            }}
-          />
-        );
-      case 'orphans':
-        return (
-          <InventoryView
-            {...shared}
-            {...PAGES.orphans}
-            rows={shortcuts.filter((s) => s.isOrphan)}
-          />
-        );
-      case 'circular':
-        return (
-          <InventoryView
-            {...shared}
-            {...PAGES.circular}
-            rows={shortcuts.filter((s) => s.isCircular)}
-          />
-        );
-      default:
-        return <InventoryView {...shared} {...PAGES.inventory} rows={shortcuts} />;
-    }
-  };
+  const page =
+    route === 'about' ? (
+      <About
+        lastScan={{
+          scopeLabel: label,
+          scannedAt: result.scanTimestamp,
+          partial: result.partial,
+          totals,
+        }}
+      />
+    ) : (
+      <InventoryView
+        {...INVENTORY_PAGE}
+        rows={shortcuts}
+        totals={totals}
+        warnings={result.warnings}
+        errors={itemErrors(result.rows)}
+        portalUrl={portalUrl}
+      />
+    );
 
   return (
     <div className="bg-background text-foreground flex min-h-screen flex-col">
@@ -246,14 +211,13 @@ function App() {
         onNavigate={navigate}
         scopeLabel={label}
         shortcutCount={totals.shortcuts}
-        counts={{ orphans: totals.orphans, circular: totals.circular }}
         scannedAt={result.scanTimestamp}
         partial={result.partial}
         isScanning={isScanning}
         onRescan={rescan}
         onChangeScope={() => setEditingScope(true)}
       >
-        {renderRoute()}
+        {page}
       </AppShell>
     </div>
   );
