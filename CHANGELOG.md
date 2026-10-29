@@ -1,43 +1,41 @@
 # Changelog
 
-Todos los cambios relevantes de este proyecto se documentan en este archivo.
+All notable changes to this project are documented in this file.
 
-El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [1.1.0] - Sin publicar
+## [1.1.0] - Unreleased
 
-### Añadido
+### Added
 
-- **Fabric App** (`app/`), construida con Rayfin: una segunda forma de obtener el inventario de shortcuts sin necesidad de ejecutar el notebook.
-  - Escaneo en vivo mediante la Function `scanShortcutInventory`, que llama a la API REST de Fabric con la identidad de la app (el propietario del ítem Fabric App).
-  - Ámbito por lista de workspaces (nombre o ID) o de todo el tenant (API de admin, con *fallback* a los workspaces accesibles).
-  - Mismo esquema de columnas que el notebook, con detección de shortcuts **huérfanos** y **circulares** y resolución de nombres de destino.
-  - Interfaz con el estilo de [Fabric Schedule Inventory](https://github.com/kilianbs/fabric-schedule-inventory): página de inicio con el ámbito y el tiempo de escaneo, navegación lateral (Inventario, Huérfanos, Circulares, Acerca de), tarjetas de resumen, tabla con búsqueda, filtros, orden y paginación, y panel de detalle con enlaces al portal de Fabric.
-  - Persistencia de los escaneos en la base de datos de la app (servicio `data` de Rayfin, entidades `ScanRun` y `ShortcutRecord`): al abrir la app se carga el último escaneo guardado y solo se vuelve a escanear a petición. Se conserva el historial; un escaneo cuyo guardado se interrumpe nunca se muestra.
-  - Tests de la lógica de inventario (`npm test` en `app/`).
-- Documentación en inglés (`README_EN.md`) y notebook localizado (`shortcut_inventory_en.ipynb`), con enlace desde el README en español.
+- **Fabric App** (`app/`), built with Rayfin: a second way to get the shortcut inventory without running the notebook.
+  - Live scan through the `scanShortcutInventory` Function, which calls the Fabric REST API with the app identity (the owner of the Fabric App item).
+  - Scope by workspace list (name or ID) or the whole tenant (admin API, falling back to the accessible workspaces).
+  - Same column schema as the notebook, with **orphan** and **circular** shortcut detection and target name resolution.
+  - Interface in the style of [Fabric Schedule Inventory](https://github.com/kilianbs/fabric-schedule-inventory): a home page with the scope and scan time, side navigation (Inventory, Orphans, Circular, About), summary cards, a table with search, filters, sorting and paging, and a detail panel with links to the Fabric portal.
+  - Scans are saved in the app database (Rayfin `data` service, `ScanRun` and `ShortcutRecord` entities): the app opens the latest saved scan and only scans again on demand. History is kept; a scan whose save is interrupted is never shown.
+  - Tests for the inventory logic and the frontend (`npm test` in `app/`).
 
-### Cambiado
+### Changed
 
-- Celdas markdown del notebook reorganizadas para mejorar la legibilidad.
+- English is the only language of the repository: the README, the notebook and the Fabric App are in English. The Spanish README and notebook were removed and the English notebook is now `shortcut_inventory.ipynb`.
+- Notebook markdown cells reorganized for readability.
 
-### Corregido
+### Fixed
 
-- El guardado en Delta fallaba con `CANNOT_DETERMINE_TYPE` cuando una columna era nula en todas las filas; ahora el DataFrame de Spark se crea con un esquema explícito (booleanos para `is_external`, `is_orphan`, `is_circular` y `governance_flag`, texto para el resto) y se omite la escritura si no hay filas.
+- Saving to Delta failed with `CANNOT_DETERMINE_TYPE` when a column was null in every row; the Spark DataFrame is now created with an explicit schema (booleans for `is_external`, `is_orphan`, `is_circular` and `governance_flag`, strings for the rest) and the write is skipped when there are no rows.
 
-### Limitaciones conocidas
+### Known limitations
 
-- La comprobación de governance (etiquetas de sensibilidad y endorsement) solo está disponible en el notebook.
-- Cada escaneo está limitado a ~250 s por el host de Functions; si se alcanza el límite, el resultado se marca como parcial.
+- The governance check (sensitivity labels and endorsement) is only available in the notebook.
+- Each scan is limited to ~250 s by the Functions host; when the limit is reached, the result is marked as partial.
 
 ## [1.0.0] - 2026-07-09
 
-### Añadido
+### Added
 
-- Notebook `shortcut_inventory.ipynb` con inventario de shortcuts de OneLake, validaciones de huérfanos, circulares y governance, informe HTML y guardado opcional en Delta.
+- `shortcut_inventory.ipynb` notebook with an inventory of OneLake shortcuts, orphan, circular and governance checks, an HTML report and optional saving to Delta.
 
 [Unreleased]: https://github.com/kilianbs/fabric-shortcut-inventory/compare/v1.1.0...HEAD
-[1.1.0]: https://github.com/kilianbs/fabric-shortcut-inventory/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/kilianbs/fabric-shortcut-inventory/releases/tag/v1.0.0

@@ -26,24 +26,24 @@ interface NavItem {
 
 const NAV_SECTIONS: readonly { title: string; items: readonly NavItem[] }[] = [
   {
-    title: 'Explorar',
+    title: 'Explore',
     items: [
-      { route: 'inventory', label: 'Inventario', icon: LayoutDashboard },
-      { route: 'orphans', label: 'Huérfanos', icon: Unlink },
-      { route: 'circular', label: 'Circulares', icon: Repeat },
+      { route: 'inventory', label: 'Inventory', icon: LayoutDashboard },
+      { route: 'orphans', label: 'Orphans', icon: Unlink },
+      { route: 'circular', label: 'Circular', icon: Repeat },
     ],
   },
   {
-    title: 'Sistema',
-    items: [{ route: 'about', label: 'Acerca de', icon: Info }],
+    title: 'System',
+    items: [{ route: 'about', label: 'About', icon: Info }],
   },
 ];
 
 const PAGE_TITLES: Record<AppRoute, string> = {
-  inventory: 'Inventario',
-  orphans: 'Huérfanos',
-  circular: 'Circulares',
-  about: 'Acerca de',
+  inventory: 'Inventory',
+  orphans: 'Orphans',
+  circular: 'Circular',
+  about: 'About',
 };
 
 export interface AppShellProps {
@@ -208,7 +208,7 @@ export function AppShell({
             )}
           >
             <p className="text-100 font-semibold uppercase tracking-widest text-muted-foreground">
-              Ámbito de Fabric
+              Fabric scope
             </p>
             <p className="text-300 mt-100 font-semibold break-words">{scopeLabel}</p>
             <p className="text-200 mt-100 flex items-center gap-200 text-muted-foreground">
@@ -229,7 +229,7 @@ export function AppShell({
               />
               <span>
                 <span className="font-medium text-foreground">
-                  {isScanning ? 'Escaneando' : partial ? 'Parcial' : 'Escaneado'}
+                  {isScanning ? 'Scanning' : partial ? 'Partial' : 'Scanned'}
                 </span>{' '}
                 · {formatTimestamp(scannedAt)}
               </span>
@@ -244,7 +244,7 @@ export function AppShell({
               )}
             >
               <SlidersHorizontal aria-hidden="true" className="icon-size-100" />
-              Cambiar ámbito
+              Change scope
             </button>
           </div>
 
@@ -252,8 +252,8 @@ export function AppShell({
             type="button"
             onClick={toggleCollapsed}
             aria-expanded={!collapsed}
-            aria-label={collapsed ? 'Expandir navegación' : 'Contraer navegación'}
-            title={collapsed ? 'Expandir navegación' : 'Contraer navegación'}
+            aria-label={collapsed ? 'Expand navigation' : 'Collapse navigation'}
+            title={collapsed ? 'Expand navigation' : 'Collapse navigation'}
             className={cn(
               'hover:bg-accent text-300 inline-flex h-800 items-center gap-200 rounded-lg px-300 text-muted-foreground transition-colors duration-150 hover:text-foreground',
               ACTION_FOCUS,
@@ -266,7 +266,7 @@ export function AppShell({
               <PanelLeftClose aria-hidden="true" className="icon-size-200 shrink-0" />
             )}
             <span aria-hidden="true" className={whenCollapsed('sr-only')}>
-              Contraer
+              Collapse
             </span>
           </button>
         </div>
@@ -289,7 +289,7 @@ export function AppShell({
               )}
             >
               <SlidersHorizontal aria-hidden="true" className="icon-size-200" />
-              Ámbito
+              Scope
             </button>
             <button
               type="button"
@@ -304,7 +304,7 @@ export function AppShell({
                 aria-hidden="true"
                 className={cn('icon-size-200', isScanning && 'animate-spin')}
               />
-              {isScanning ? 'Escaneando…' : 'Escanear de nuevo'}
+              {isScanning ? 'Scanning…' : 'Scan again'}
             </button>
           </div>
         </div>

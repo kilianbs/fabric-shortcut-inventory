@@ -32,11 +32,11 @@ interface Column {
 
 const COLUMNS: readonly Column[] = [
   { key: 'name', header: 'Shortcut', firstDirection: 'asc', width: 'w-[20%]' },
-  { key: 'status', header: 'Estado', firstDirection: 'desc', width: 'w-[15%]' },
-  { key: 'itemName', header: 'Ítem', firstDirection: 'asc', width: 'w-[15%]' },
+  { key: 'status', header: 'Status', firstDirection: 'desc', width: 'w-[15%]' },
+  { key: 'itemName', header: 'Item', firstDirection: 'asc', width: 'w-[15%]' },
   { key: 'workspaceName', header: 'Workspace', firstDirection: 'asc', width: 'w-[15%]' },
-  { key: 'targetType', header: 'Destino', firstDirection: 'asc', width: 'w-[12%]' },
-  { key: 'targetLocation', header: 'Ubicación', firstDirection: 'asc', width: 'w-[23%]' },
+  { key: 'targetType', header: 'Target', firstDirection: 'asc', width: 'w-[12%]' },
+  { key: 'targetLocation', header: 'Location', firstDirection: 'asc', width: 'w-[23%]' },
 ];
 
 const DEFAULT_SORT: SortState<ColumnKey> = { key: 'status', direction: 'desc' };
@@ -113,9 +113,9 @@ export function ShortcutTable({ rows, selectedId, onSelect }: ShortcutTableProps
       <div className="hidden max-h-[70vh] overflow-auto md:block">
         <table className="w-full min-w-[60rem] table-fixed border-separate border-spacing-0">
           <caption className="sr-only">
-            Shortcuts, ordenados por{' '}
+            Shortcuts, sorted by{' '}
             {COLUMNS.find((column) => column.key === sort.key)?.header}{' '}
-            {sort.direction === 'asc' ? 'ascendente' : 'descendente'}
+            {sort.direction === 'asc' ? 'ascending' : 'descending'}
           </caption>
           <colgroup>
             {COLUMNS.map((column) => (
@@ -167,9 +167,9 @@ export function ShortcutTable({ rows, selectedId, onSelect }: ShortcutTableProps
 /** Orphan, circular and external markers; a dash when the shortcut is healthy. */
 export function StatusChips({ row }: { row: ShortcutRow }) {
   const chips = [
-    row.isOrphan && { label: 'Huérfano', tone: 'bg-destructive/10 text-destructive' },
+    row.isOrphan && { label: 'Orphan', tone: 'bg-destructive/10 text-destructive' },
     row.isCircular && { label: 'Circular', tone: 'bg-warning text-warning-foreground' },
-    row.isExternal && { label: 'Externo', tone: 'border-border border text-muted-foreground' },
+    row.isExternal && { label: 'External', tone: 'border-border border text-muted-foreground' },
   ].filter((chip) => chip !== false);
   if (chips.length === 0) return <span className="text-300 text-muted-foreground">—</span>;
   return (
@@ -308,7 +308,7 @@ function MobileSort({
   return (
     <div className="border-border flex items-center gap-200 border-b px-400 py-200 md:hidden">
       <label htmlFor="shortcut-sort" className="text-200 text-muted-foreground">
-        Ordenar por
+        Sort by
       </label>
       <select
         id="shortcut-sort"
@@ -376,17 +376,17 @@ function Pager({
   return (
     <div className="flex flex-wrap items-center justify-between gap-x-400 gap-y-200 rounded-b-2xl bg-muted/50 px-400 py-300">
       <p className="text-200 tabular-nums text-muted-foreground" aria-live="polite">
-        Mostrando{' '}
+        Showing{' '}
         <span className="font-semibold text-foreground">
           {formatNumber(from)}–{formatNumber(to)}
         </span>{' '}
-        de <span className="font-semibold text-foreground">{formatNumber(total)}</span>
+        of <span className="font-semibold text-foreground">{formatNumber(total)}</span>
       </p>
 
       <div className="flex flex-wrap items-center gap-x-400 gap-y-200">
         <div className="flex items-center gap-200">
           <label htmlFor="shortcut-page-size" className="text-200 text-muted-foreground">
-            Filas por página
+            Rows per page
           </label>
           <select
             id="shortcut-page-size"
@@ -405,10 +405,10 @@ function Pager({
           </select>
         </div>
 
-        <nav aria-label="Paginación" className="flex items-center gap-100">
+        <nav aria-label="Pagination" className="flex items-center gap-100">
           <button
             type="button"
-            aria-label="Página anterior"
+            aria-label="Previous page"
             disabled={page <= 1}
             onClick={() => onPage(page - 1)}
             className={cn(PAGE_BUTTON, 'border-border bg-card hover:bg-accent')}
@@ -428,7 +428,7 @@ function Pager({
               <button
                 key={item}
                 type="button"
-                aria-label={`Página ${item}`}
+                aria-label={`Page ${item}`}
                 aria-current={item === page ? 'page' : undefined}
                 onClick={() => onPage(item)}
                 className={cn(
@@ -444,7 +444,7 @@ function Pager({
           )}
           <button
             type="button"
-            aria-label="Página siguiente"
+            aria-label="Next page"
             disabled={page >= pageCount}
             onClick={() => onPage(page + 1)}
             className={cn(PAGE_BUTTON, 'border-border bg-card hover:bg-accent')}

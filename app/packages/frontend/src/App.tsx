@@ -22,30 +22,30 @@ import { computeTotals, itemErrors, toShortcutRows } from '@/lib/shortcut-view';
 const errorText = (e: unknown, fallback: string) => (e instanceof Error ? e.message : fallback);
 
 function scopeLabel({ mode, workspaces }: Scope): string {
-  return mode === 'all' ? 'Todos los workspaces accesibles' : workspaces.join(', ');
+  return mode === 'all' ? 'All accessible workspaces' : workspaces.join(', ');
 }
 
 const PAGES = {
   inventory: {
     eyebrow: 'Shortcut inventory',
-    title: 'Shortcuts de OneLake',
-    subtitle: 'Origen, destino y validaciones de cada shortcut del ámbito',
-    emptyTitle: 'No hay shortcuts en el ámbito',
-    emptyHint: 'Ningún Lakehouse, KQL Database ni Mirrored Database escaneado tiene shortcuts.',
+    title: 'OneLake shortcuts',
+    subtitle: 'Source, target and checks of every shortcut in scope',
+    emptyTitle: 'No shortcuts in scope',
+    emptyHint: 'No scanned Lakehouse, KQL Database or Mirrored Database has shortcuts.',
   },
   orphans: {
-    eyebrow: 'Validación',
-    title: 'Shortcuts huérfanos',
-    subtitle: 'Shortcuts cuyo ítem de destino no existe en el ámbito escaneado',
-    emptyTitle: 'Ningún shortcut huérfano',
-    emptyHint: 'Todos los destinos OneLake existen en el ámbito escaneado.',
+    eyebrow: 'Check',
+    title: 'Orphan shortcuts',
+    subtitle: 'Shortcuts whose target item does not exist in the scanned scope',
+    emptyTitle: 'No orphan shortcuts',
+    emptyHint: 'Every OneLake target exists in the scanned scope.',
   },
   circular: {
-    eyebrow: 'Validación',
-    title: 'Shortcuts circulares',
-    subtitle: 'Shortcuts que forman parte de una cadena que vuelve a su origen',
-    emptyTitle: 'Ningún shortcut circular',
-    emptyHint: 'No hay ciclos entre los shortcuts del ámbito.',
+    eyebrow: 'Check',
+    title: 'Circular shortcuts',
+    subtitle: 'Shortcuts in a chain that leads back to its source',
+    emptyTitle: 'No circular shortcuts',
+    emptyHint: 'There are no cycles between the shortcuts in scope.',
   },
 } as const;
 
@@ -92,7 +92,7 @@ function App() {
         }
       } catch (e) {
         if (!cancelled) {
-          setError(`No se pudo abrir el último escaneo guardado: ${errorText(e, 'error inesperado')}`);
+          setError(`Could not open the last saved scan: ${errorText(e, 'unexpected error')}`);
         }
       } finally {
         if (!cancelled) setIsLoading(false);
@@ -110,7 +110,7 @@ function App() {
       const client = await getRayfinClient();
       await saveScan(client.data, next, (done, total) => setSaving({ done, total }));
     } catch (e) {
-      setSaveError(`El escaneo no se pudo guardar: ${errorText(e, 'error inesperado')}`);
+      setSaveError(`The scan could not be saved: ${errorText(e, 'unexpected error')}`);
     } finally {
       setSaving(null);
     }
@@ -131,7 +131,7 @@ function App() {
       setEditingScope(false);
       void save(next);
     } catch (e) {
-      setError(errorText(e, 'Error inesperado al escanear.'));
+      setError(errorText(e, 'Unexpected error while scanning.'));
     } finally {
       setStartedAt(null);
     }
@@ -140,7 +140,7 @@ function App() {
   if (isLoading) {
     return (
       <div className="bg-background text-foreground flex min-h-screen flex-col gap-400 p-600">
-        <p className="text-300 text-muted-foreground">Abriendo el último escaneo guardado…</p>
+        <p className="text-300 text-muted-foreground">Opening the last saved scan…</p>
         <LoadingState rows={4} />
       </div>
     );
@@ -219,7 +219,7 @@ function App() {
           role="status"
         >
           <span aria-hidden="true" className="h-100 w-100 animate-pulse rounded-full bg-current" />
-          Escaneando workspaces en busca de shortcuts…
+          Scanning workspaces for shortcuts…
         </div>
       ) : null}
       {saving ? (
@@ -228,7 +228,7 @@ function App() {
           role="status"
         >
           <span aria-hidden="true" className="h-100 w-100 animate-pulse rounded-full bg-current" />
-          Guardando el inventario… {saving.done}/{saving.total}
+          Saving the inventory… {saving.done}/{saving.total}
         </div>
       ) : null}
       {error ? (

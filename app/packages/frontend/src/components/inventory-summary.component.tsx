@@ -84,13 +84,13 @@ function TargetMeter({ oneLake, external }: { oneLake: number; external: number 
 /** Global figures for the scan, as a row of KPI tiles. */
 export function InventorySummary({ totals }: { totals: InventoryTotals }) {
   return (
-    <section aria-label="Resumen del inventario">
+    <section aria-label="Inventory summary">
       <ul className="grid grid-cols-1 gap-400 sm:grid-cols-2 xl:grid-cols-4">
         <Tile
           icon={FolderTree}
           label="Workspaces"
           value={totals.workspaces}
-          hint={`${formatNumber(totals.items)} ítems revisados`}
+          hint={`${formatNumber(totals.items)} items checked`}
         />
         <Tile
           icon={Link2}
@@ -103,19 +103,19 @@ export function InventorySummary({ totals }: { totals: InventoryTotals }) {
         </Tile>
         <Tile
           icon={Unlink}
-          label="Huérfanos"
+          label="Orphans"
           index={2}
           tone="danger"
           value={totals.orphans}
-          hint={totals.orphans === 0 ? 'todos los destinos existen' : 'destino inexistente'}
+          hint={totals.orphans === 0 ? 'every target exists' : 'missing target'}
         />
         <Tile
           icon={Repeat}
-          label="Circulares"
+          label="Circular"
           index={3}
           tone="warning"
           value={totals.circular}
-          hint={totals.circular === 0 ? 'sin ciclos' : 'forman parte de un ciclo'}
+          hint={totals.circular === 0 ? 'no cycles' : 'part of a cycle'}
         />
       </ul>
     </section>

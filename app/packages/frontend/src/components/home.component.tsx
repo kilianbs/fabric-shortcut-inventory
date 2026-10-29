@@ -21,10 +21,10 @@ export type ScopeMode = 'list' | 'all';
 export const SCAN_LIMIT_MS = 250_000;
 
 const FEATURES = [
-  { icon: FolderTree, title: 'Workspaces', text: 'Una lista por nombre o ID, o todo lo accesible' },
-  { icon: Link2, title: 'Shortcuts', text: 'De Lakehouse, KQL Database y Mirrored Database' },
-  { icon: Unlink, title: 'Huérfanos', text: 'Destinos que ya no existen en el ámbito' },
-  { icon: Repeat, title: 'Circulares', text: 'Cadenas de shortcuts que vuelven al origen' },
+  { icon: FolderTree, title: 'Workspaces', text: 'A list by name or ID, or everything accessible' },
+  { icon: Link2, title: 'Shortcuts', text: 'From Lakehouse, KQL Database and Mirrored Database' },
+  { icon: Unlink, title: 'Orphans', text: 'Targets that no longer exist in scope' },
+  { icon: Repeat, title: 'Circular', text: 'Shortcut chains that lead back to their source' },
 ] as const;
 
 const FOCUS =
@@ -83,10 +83,10 @@ export function Home({
   const share = Math.min(1, elapsed / SCAN_LIMIT_MS);
 
   const status = isScanning
-    ? { label: 'Escaneando', tone: 'bg-primary/10 text-primary' }
+    ? { label: 'Scanning', tone: 'bg-primary/10 text-primary' }
     : error
-      ? { label: 'Último escaneo fallido', tone: 'bg-destructive/10 text-destructive' }
-      : { label: 'Listo para escanear', tone: 'bg-primary/10 text-primary' };
+      ? { label: 'Last scan failed', tone: 'bg-destructive/10 text-destructive' }
+      : { label: 'Ready to scan', tone: 'bg-primary/10 text-primary' };
 
   return (
     <div className="flex flex-1 flex-col justify-center px-400 py-600">
@@ -105,7 +105,7 @@ export function Home({
                 Fabric Shortcut Inventory
               </p>
               <p className="text-200 mt-100 text-muted-foreground">
-                Shortcuts de OneLake · Workspaces de Fabric
+                OneLake shortcuts · Fabric workspaces
               </p>
             </div>
           </div>
@@ -136,24 +136,24 @@ export function Home({
                 )}
               >
                 <ArrowLeft aria-hidden="true" className="icon-size-100" />
-                Volver al inventario
+                Back to the inventory
               </button>
             ) : (
               <span className="text-200 bg-primary/10 text-primary inline-flex w-fit items-center gap-200 rounded-full px-300 py-100 font-medium">
                 <Sparkles aria-hidden="true" className="h-300 w-300" />
-                Sin inventario todavía
+                No inventory yet
               </span>
             )}
             <h1 className="font-heading text-hero-900 mt-400 font-semibold leading-tight tracking-tight">
               Fabric Shortcut Inventory
             </h1>
             <p className="font-heading text-hero-700 text-primary font-semibold leading-tight tracking-tight">
-              Qué apunta a dónde, y qué ya no existe.
+              What points where, and what no longer exists.
             </p>
             <p className="text-400 mt-300 max-w-xl leading-500 text-muted-foreground">
-              Un escaneo recorre los workspaces elegidos, lista los shortcuts de OneLake de cada
-              ítem y detecta los huérfanos y los circulares. El resultado se guarda y la app
-              lo abre directamente la próxima vez.
+              A scan walks the chosen workspaces, lists the OneLake shortcuts of every item and
+              detects orphan and circular shortcuts. The result is saved and the app opens it
+              straight away next time.
             </p>
 
             <ul className="mt-auto grid gap-300 pt-600 sm:grid-cols-2 lg:auto-rows-fr">
@@ -180,37 +180,37 @@ export function Home({
               <div className="flex items-start justify-between gap-300">
                 <div>
                   <p className="text-100 text-primary font-semibold uppercase tracking-widest">
-                    Progreso del escaneo
+                    Scan progress
                   </p>
                   <p className="text-400 mt-100 font-medium" role="status" aria-live="polite">
                     {isScanning
-                      ? 'Leyendo workspaces, ítems y shortcuts…'
-                      : 'Listo para construir el inventario'}
+                      ? 'Reading workspaces, items and shortcuts…'
+                      : 'Ready to build the inventory'}
                   </p>
                 </div>
                 <span className="text-200 text-muted-foreground">
-                  {isScanning ? 'en curso' : 'en espera'}
+                  {isScanning ? 'running' : 'idle'}
                 </span>
               </div>
               <div className="my-500">
                 <ElapsedRing share={share} label={isScanning ? formatDuration(elapsed) : '0:00'} />
               </div>
               <p className="text-200 text-center text-muted-foreground">
-                Límite por escaneo: {formatDuration(SCAN_LIMIT_MS)}. Si se alcanza, el resultado
-                llega marcado como parcial.
+                Limit per scan: {formatDuration(SCAN_LIMIT_MS)}. If it is reached, the result is
+                marked as partial.
               </p>
             </div>
 
             <div className="border-border bg-card rounded-xl border p-500 shadow-sm">
               <fieldset disabled={isScanning} className="flex flex-col gap-300">
                 <legend className="text-100 text-primary font-semibold uppercase tracking-widest">
-                  Ámbito
+                  Scope
                 </legend>
-                <div className="grid grid-cols-2 gap-200" role="radiogroup" aria-label="Ámbito">
+                <div className="grid grid-cols-2 gap-200" role="radiogroup" aria-label="Scope">
                   {(
                     [
-                      ['list', 'Lista de workspaces'],
-                      ['all', 'Todos los accesibles'],
+                      ['list', 'Workspace list'],
+                      ['all', 'All accessible'],
                     ] as const
                   ).map(([mode, label]) => (
                     <label
@@ -236,12 +236,12 @@ export function Home({
                 </div>
                 {scopeMode === 'list' ? (
                   <label className="text-200 flex flex-col gap-100 text-muted-foreground">
-                    Nombres o IDs, uno por línea o separados por comas
+                    Names or IDs, one per line or comma-separated
                     <textarea
                       value={listText}
                       onChange={(event) => onListText(event.target.value)}
                       rows={3}
-                      placeholder={'Ventas\nFinanzas'}
+                      placeholder={'Sales\nFinance'}
                       className={cn(
                         'border-input bg-background text-300 font-monospace rounded-lg border p-300 text-foreground',
                         FOCUS
@@ -250,8 +250,8 @@ export function Home({
                   </label>
                 ) : (
                   <p className="text-200 text-muted-foreground">
-                    Todo el tenant con permisos de administrador de Fabric; si no, los workspaces
-                    a los que la identidad de la app tiene acceso.
+                    The whole tenant with Fabric administrator permissions; otherwise, the
+                    workspaces the app identity can access.
                   </p>
                 )}
               </fieldset>
@@ -274,7 +274,7 @@ export function Home({
                   aria-hidden="true"
                   className={cn('h-300 w-300', isScanning && 'animate-pulse')}
                 />
-                {isScanning ? 'Escaneando…' : 'Escanear shortcuts'}
+                {isScanning ? 'Scanning…' : 'Scan shortcuts'}
               </button>
             </div>
 
@@ -282,8 +282,8 @@ export function Home({
 
             <p className="text-200 flex items-start gap-200 text-muted-foreground">
               <ShieldCheck aria-hidden="true" className="h-300 w-300 shrink-0" />
-              El escaneo usa la identidad de la app (el propietario del ítem), no la tuya. Solo
-              entran los workspaces a los que esa identidad tiene acceso.
+              The scan uses the app identity (the owner of the item), not yours. Only the
+              workspaces that identity can access are included.
             </p>
           </div>
         </main>
@@ -314,7 +314,7 @@ function ElapsedRing({ share, label }: { share: number; label: string }) {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="font-numeric text-hero-800 font-semibold tabular-nums">{label}</span>
-        <span className="text-200 text-muted-foreground">transcurrido</span>
+        <span className="text-200 text-muted-foreground">elapsed</span>
       </div>
     </div>
   );

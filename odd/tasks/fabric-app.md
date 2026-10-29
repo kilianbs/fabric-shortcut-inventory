@@ -10,6 +10,7 @@ Branch: feat/fabric-app · Delivery: single-pr · Test runner: node --test (func
 - S5 "Hacer el desarrollo en una rama a parte y añadir archivo CHANGELOG para preparar release y version para este desarrollo"
 - S6 "Quiero que el diseño de la app sea del estilo de esta https://github.com/kilianbs/fabric-schedule-inventory": app shell with sidebar (Explorar/Sistema), breadcrumb top bar with the primary action, home with hero and scope card, KPI tiles, searchable/filterable sortable table with pager and a detail panel, About page, Fabric item icons.
 - S7 "La app debe de persistir los datos y no hacer el escaneo cada vez": each scan is saved in the Rayfin data service (ScanRun + ShortcutRecord, MSSQL); on open the app shows the latest complete saved scan and only scans again when the user asks. Assumptions: history is kept (no deletes), saved scans are shared by every app user (the scan already runs as the app identity).
+- S8 "Antes quiero que solo te quedes con la versión en inglés, que será la única y el idioma global del repositorio. La app también tiene que estar en inglés": only the English README and notebook remain (as `README.md` and `shortcut_inventory.ipynb`), the CHANGELOG is in English, and all app UI copy is English. Verbatim user quotes in this document stay as written.
 - Assumption: governance enrichment (sempy admin scan) is not ported in v1; the Governance tab is shown as not available.
 
 ## Tasks
@@ -20,6 +21,7 @@ Branch: feat/fabric-app · Delivery: single-pr · Test runner: node --test (func
 - [x] T5 S5 CHANGELOG.md + app version 1.1.0 + README section · inline
 - [x] T7 S6 redesign frontend in the reference style · inline · RED observed (shortcut-view module missing) → GREEN 8/8; gates OK, 6 node + 64 vitest; visual check via local preview at 1600px and 390px (Estado column moved second, KPI grid overflow on mobile fixed)
 - [x] T8 S7 persist scans in Rayfin data and load the latest on open · inline · RED observed (scan-store module missing) → GREEN 7/7; typecheck, lint, build OK; 6 node + 75 vitest; deployed and checked by the user
+- [x] T9 S8 English-only repository and app · inline · 75 vitest green after updating App.spec assertions
 - [ ] T6 deploy + typegen + live scan check · deployed to DataGym as `shortcut-inventory`, typegen done, signed-out redirect verified; signed-in live scan pending (needs the user's Entra sign-in)
 
 ## Log
@@ -36,3 +38,5 @@ Branch: feat/fabric-app · Delivery: single-pr · Test runner: node --test (func
 - L11 Design: data-modeling pack (mssql). The browser saves after the Function returns (the Function has no time left within the 250 s host limit; the client has no bulk create, so rows are created one by one with bounded concurrency). A ScanRun is created with complete=false and flipped to true after every row is saved, so an interrupted save is never shown. No delete permission: history is kept.
 - L12 T8 done locally. Pending: `rayfin up` must provision the SQL Database and apply the ScanRun/ShortcutRecord schema; no offline schema validation exists in the CLI.
 - L13 2026-10-29 user: "todo ok" (deployed with the data service, persistence works) → committed.
+- L14 2026-10-29 user: "Antes quiero que solo te quedes con la versión en inglés, que será la única y el idioma global del repositorio. La app también tiene que estar en inglés"
+- L15 Supersedes L8 "UI copy stays in Spanish". The two notebooks had identical code except the report tab labels, so the Spanish one was dropped without losing logic. Pending: `assets/report-preview.png` still shows Spanish tab labels ("Vista General", "Circulares") and needs a new screenshot from a notebook run.

@@ -68,7 +68,7 @@ export function toShortcutRows(rows: readonly InventoryRow[]): ShortcutRow[] {
       itemId: r.item_id,
       itemName: r.item_name || r.item_id,
       itemType: r.item_type ?? '',
-      targetType: r.target_type || 'Desconocido',
+      targetType: r.target_type || 'Unknown',
       targetWorkspaceId: r.target_workspace_id,
       targetWorkspaceName: r.target_workspace_name || r.target_workspace_id || '',
       targetItemId: r.target_item_id,

@@ -108,7 +108,7 @@ export function InventoryView({
   const activeChips = [
     filters.query.trim() !== '' && {
       key: 'query',
-      label: 'Búsqueda',
+      label: 'Search',
       value: `“${filters.query.trim()}”`,
       clear: () => updateFilter('query', ''),
     },
@@ -120,7 +120,7 @@ export function InventoryView({
     },
     filters.targetType !== '' && {
       key: 'targetType',
-      label: 'Destino',
+      label: 'Target',
       value: filters.targetType,
       clear: () => updateFilter('targetType', ''),
     },
@@ -157,18 +157,18 @@ export function InventoryView({
                   <span className="font-semibold text-foreground">
                     {formatNumber(visible.length)}
                   </span>
-                  &nbsp;de {formatNumber(rows.length)}
+                  &nbsp;of {formatNumber(rows.length)}
                 </p>
               </div>
 
               <div
                 role="search"
-                aria-label="Filtrar shortcuts"
+                aria-label="Filter shortcuts"
                 className="flex flex-wrap items-center gap-200"
               >
                 <div className="relative min-w-0 flex-1 basis-56">
                   <label htmlFor="shortcut-search" className="sr-only">
-                    Buscar shortcuts
+                    Search shortcuts
                   </label>
                   <Search
                     aria-hidden="true"
@@ -177,7 +177,7 @@ export function InventoryView({
                   <input
                     id="shortcut-search"
                     type="search"
-                    placeholder="Buscar por nombre, ítem, workspace o destino…"
+                    placeholder="Search by name, item, workspace or target…"
                     value={filters.query}
                     onChange={(event) => updateFilter('query', event.target.value)}
                     className={cn(CONTROL_CLASS, 'w-full pr-800 pl-800')}
@@ -185,7 +185,7 @@ export function InventoryView({
                   {filters.query !== '' ? (
                     <button
                       type="button"
-                      aria-label="Borrar búsqueda"
+                      aria-label="Clear search"
                       onClick={() => updateFilter('query', '')}
                       className={cn(
                         'hover:bg-accent animate-fade-in absolute top-1/2 right-100 inline-flex h-600 w-600 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground',
@@ -198,15 +198,15 @@ export function InventoryView({
                 </div>
                 <FilterMenu
                   label="Workspace"
-                  allLabel="Todos los workspaces"
+                  allLabel="All workspaces"
                   icon={Folder}
                   value={filters.workspace}
                   onChange={(value) => updateFilter('workspace', value)}
                   options={workspaceOptions}
                 />
                 <FilterMenu
-                  label="Destino"
-                  allLabel="Todos los destinos"
+                  label="Target"
+                  allLabel="All targets"
                   icon={Shapes}
                   value={filters.targetType}
                   onChange={(value) => updateFilter('targetType', value)}
@@ -216,7 +216,7 @@ export function InventoryView({
 
               {filtersChanged ? (
                 <div
-                  aria-label="Filtros activos"
+                  aria-label="Active filters"
                   role="group"
                   className="animate-fade-in flex flex-wrap items-center gap-200"
                 >
@@ -229,7 +229,7 @@ export function InventoryView({
                       <span className="truncate font-medium">{chip.value}</span>
                       <button
                         type="button"
-                        aria-label={`Quitar filtro de ${chip.label.toLowerCase()}`}
+                        aria-label={`Remove ${chip.label.toLowerCase()} filter`}
                         onClick={chip.clear}
                         className={cn(
                           'hover:bg-primary/15 inline-flex h-500 w-500 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground',
@@ -248,7 +248,7 @@ export function InventoryView({
                       FOCUS
                     )}
                   >
-                    Quitar todos
+                    Clear all
                   </button>
                 </div>
               ) : null}
@@ -259,12 +259,12 @@ export function InventoryView({
                 <div className="p-400">
                   {filtersChanged ? (
                     <EmptyState
-                      title="Ningún shortcut coincide con los filtros"
-                      hint="Cambia la búsqueda o los filtros para ver más."
+                      title="No shortcut matches the filters"
+                      hint="Change the search or the filters to see more."
                       action={
                         <button type="button" onClick={clearFilters} className={SECONDARY_BUTTON}>
                           <X aria-hidden="true" className="icon-size-200" />
-                          Ver todos
+                          Show all
                         </button>
                       }
                     />
@@ -293,9 +293,9 @@ export function InventoryView({
                 className="icon-size-300 2xl:icon-size-400 shrink-0 animate-bounce text-muted-foreground [animation-iteration-count:3]"
               />
               <div className="flex flex-col gap-100">
-                <p className="text-300 font-medium">Ningún shortcut seleccionado</p>
+                <p className="text-300 font-medium">No shortcut selected</p>
                 <p className="text-200 text-muted-foreground">
-                  Selecciona una fila para ver su destino y sus validaciones.
+                  Select a row to see its target and checks.
                 </p>
               </div>
             </div>
@@ -317,7 +317,7 @@ function ScanNotices({
   if (warnings.length === 0 && errors.length === 0) return null;
   return (
     <section
-      aria-label="Avisos del escaneo"
+      aria-label="Scan notices"
       className="border-warning-border bg-warning text-warning-foreground animate-fade-up flex items-start gap-300 rounded-xl border px-400 py-300"
     >
       <TriangleAlert aria-hidden="true" className="icon-size-200 mt-100 shrink-0" />
@@ -328,7 +328,7 @@ function ScanNotices({
         {errors.length > 0 ? (
           <details>
             <summary className="cursor-pointer font-medium">
-              {formatNumber(errors.length)} ítem{errors.length === 1 ? '' : 's'} sin leer
+              {formatNumber(errors.length)} unreadable item{errors.length === 1 ? '' : 's'}
             </summary>
             <ul className="text-200 mt-200 flex flex-col gap-100">
               {errors.map((e, index) => (
@@ -361,24 +361,24 @@ function ShortcutDetail({
   const links = fabricLinks(shortcut, portalUrl);
   const targetLinks = fabricLinks({ workspaceId: shortcut.targetWorkspaceId }, portalUrl);
   const fields: [string, string][] = [
-    ['Ruta', shortcut.path ? `${shortcut.path}/${shortcut.name}` : shortcut.name],
-    ['Tipo de destino', shortcut.targetType],
-    ['Workspace destino', shortcut.targetWorkspaceName],
-    ['Ítem destino', shortcut.targetItemName],
-    ['Subruta', shortcut.targetSubpath],
-    ['Ubicación', shortcut.targetLocation],
+    ['Path', shortcut.path ? `${shortcut.path}/${shortcut.name}` : shortcut.name],
+    ['Target type', shortcut.targetType],
+    ['Target workspace', shortcut.targetWorkspaceName],
+    ['Target item', shortcut.targetItemName],
+    ['Subpath', shortcut.targetSubpath],
+    ['Location', shortcut.targetLocation],
   ];
 
   return (
     <section
       ref={ref}
       className="border-border bg-card animate-slide-in scroll-mt-400 rounded-2xl border p-500 shadow-sm 2xl:sticky 2xl:top-400"
-      aria-label="Detalle del shortcut"
+      aria-label="Shortcut detail"
     >
       <div className="flex items-start justify-between gap-300">
         <div className="min-w-0">
           <p className="text-100 text-primary font-semibold uppercase tracking-widest">
-            Detalle del shortcut
+            Shortcut detail
           </p>
           <h2 className="font-heading text-500 mt-100 font-semibold break-words">
             {shortcut.name}
@@ -386,7 +386,7 @@ function ShortcutDetail({
         </div>
         <button
           type="button"
-          aria-label="Cerrar detalle"
+          aria-label="Close detail"
           onClick={onClose}
           className={cn(
             'hover:bg-accent inline-flex h-700 w-700 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-[background-color,rotate] duration-200 hover:rotate-90',
@@ -397,7 +397,7 @@ function ShortcutDetail({
         </button>
       </div>
       <div className="mt-200 flex flex-wrap items-center gap-200">
-        <TypeBadge value={shortcut.itemType || 'Ítem'} />
+        <TypeBadge value={shortcut.itemType || 'Item'} />
         <span className="text-200 font-medium">{shortcut.itemName}</span>
         <span className="text-200 inline-flex items-center gap-100 text-muted-foreground">
           <Folder aria-hidden="true" className="icon-size-100" />
@@ -412,36 +412,36 @@ function ShortcutDetail({
               href={links.item}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Abrir ${shortcut.itemName} en Fabric (nueva pestaña)`}
+              aria-label={`Open ${shortcut.itemName} in Fabric (new tab)`}
               className={cn(
                 'bg-primary text-primary-foreground hover:bg-primary/90 text-300 inline-flex h-800 items-center gap-200 rounded-lg px-300 font-medium transition-colors duration-150',
                 FOCUS
               )}
             >
               <ExternalLink aria-hidden="true" className="icon-size-200" />
-              Abrir en Fabric
+              Open in Fabric
             </a>
           ) : null}
           <a
             href={links.workspace}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Abrir el workspace ${shortcut.workspaceName} en Fabric (nueva pestaña)`}
+            aria-label={`Open the ${shortcut.workspaceName} workspace in Fabric (new tab)`}
             className={SECONDARY_BUTTON}
           >
             <Folder aria-hidden="true" className="icon-size-200" />
-            Abrir workspace
+            Open workspace
           </a>
           {targetLinks.workspace && !shortcut.isOrphan ? (
             <a
               href={targetLinks.workspace}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Abrir el workspace de destino ${shortcut.targetWorkspaceName} en Fabric (nueva pestaña)`}
+              aria-label={`Open the target workspace ${shortcut.targetWorkspaceName} in Fabric (new tab)`}
               className={SECONDARY_BUTTON}
             >
               <ExternalLink aria-hidden="true" className="icon-size-200" />
-              Workspace destino
+              Target workspace
             </a>
           ) : null}
         </div>
@@ -455,12 +455,12 @@ function ShortcutDetail({
         <div className="mt-300 flex flex-col gap-200">
           {shortcut.isOrphan ? (
             <p className="bg-destructive/10 text-destructive text-200 rounded-lg px-300 py-200 break-words">
-              {shortcut.orphanReason || 'El ítem de destino no existe en el ámbito escaneado.'}
+              {shortcut.orphanReason || 'The target item does not exist in the scanned scope.'}
             </p>
           ) : null}
           {shortcut.isCircular ? (
             <p className="bg-warning text-warning-foreground text-200 font-monospace rounded-lg px-300 py-200 break-words">
-              {shortcut.circularPath || 'Forma parte de un ciclo de shortcuts.'}
+              {shortcut.circularPath || 'Part of a shortcut cycle.'}
             </p>
           ) : null}
         </div>

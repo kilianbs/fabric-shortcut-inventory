@@ -18,7 +18,7 @@ export function LoadingState({ rows = 3 }: { readonly rows?: number }) {
       className="flex flex-col gap-200"
       role="status"
       aria-busy="true"
-      aria-label="Cargando"
+      aria-label="Loading"
     >
       {Array.from({ length: rows }, (_, i) => (
         <div
@@ -63,7 +63,7 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
         className="text-destructive icon-size-200 mt-100 shrink-0"
       />
       <div className="text-300 min-w-0 flex-1">
-        <p className="font-semibold">No se pudo completar</p>
+        <p className="font-semibold">Something went wrong</p>
         <p className="mt-100 text-muted-foreground">{message}</p>
       </div>
       {onRetry ? (
@@ -72,7 +72,7 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
           onClick={onRetry}
           className="text-200 focus-visible:ring-ring shrink-0 rounded-md px-200 py-100 font-medium underline underline-offset-2 focus-visible:ring-2 focus-visible:outline-none"
         >
-          Reintentar
+          Retry
         </button>
       ) : null}
     </div>
